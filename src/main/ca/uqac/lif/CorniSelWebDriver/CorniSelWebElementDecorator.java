@@ -15,6 +15,7 @@ public class CorniSelWebElementDecorator extends WebElementDecorator{
 	
 	@Override
 	public void click() {
+		m_interpreter.evaluateAll(this.getWebElement());
 		super.click();
 	}
 	

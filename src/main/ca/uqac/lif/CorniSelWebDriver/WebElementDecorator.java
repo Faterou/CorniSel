@@ -103,5 +103,9 @@ public class WebElementDecorator implements WebElement{
 	public void submit() {
 		m_webElement.submit();
 	}
+	
+	protected WebElement getWebElement() {
+		return m_webElement;
+	}
 
 }

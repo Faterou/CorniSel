@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
@@ -25,30 +27,24 @@ public class CorniSelWebDriverDecorator extends WebDriverDecorator implements IC
 	
 	public UpdateMode updateMode = UpdateMode.AUTOMATIC;
 	
-	public CorniSelWebDriverDecorator(RemoteWebDriver webDriver) {
-		super(webDriver);
+	public CorniSelWebDriverDecorator(RemoteWebDriver driver) {
+		super(driver);
 		m_interpreter = new Interpreter();
 		m_script = "";
 	}
 	
-	public boolean setCornipickleProperties(String properties) {
-		try {
-			m_interpreter.parseProperties(properties);
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return false;
-		}
-		return true;
+	public void setCornipickleProperties(String properties) throws ParseException{
+		m_interpreter.parseProperties(properties);
 	}
 
 	@Override
 	public void evaluateAll(WebElement event) {
+		System.out.println("Evaluation");
 		if(m_script.equals("")) {
 			m_script = readJS();
 		}
 		
-		String jsonString = (String)(super.executeScript(m_script, event));
+		String jsonString = (String)(super.executeScript(m_script, event, m_interpreter.getAttributes(), m_interpreter.getTagNames()));
 		JsonElement j;
 		try {
 			j = new JsonParser().parse(jsonString);
@@ -57,6 +53,13 @@ public class CorniSelWebDriverDecorator extends WebDriverDecorator implements IC
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+	}
+	
+	@Override
+	public CorniSelWebElementDecorator findElement(By by) {
+		WebElement we = super.findElement(by);
+		CorniSelWebElementDecorator cswe = new CorniSelWebElementDecorator(we,this);
+		return cswe;
 	}
 	
 	private String readJS() {
@@ -79,5 +82,4 @@ public class CorniSelWebDriverDecorator extends WebDriverDecorator implements IC
 		}
 		return null;
 	}
-
 }

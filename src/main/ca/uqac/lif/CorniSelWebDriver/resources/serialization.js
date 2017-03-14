@@ -3,14 +3,14 @@
  * JSON by reporting only attributes that appear in the properties
  * to evaluate.
  */
-var m_attributesToInclude = [%%ATTRIBUTELIST%%];
+var m_attributesToInclude = arguments[1];
 
 /**
  * An array of tag names attributes to include. Results in a smaller
  * JSON by reporting only tags that appear in the properties
  * to evaluate.
  */
-var m_tagsToInclude = [%%TAGLIST%%];
+var m_tagsToInclude = arguments[2];
 
 var INCLUDE = 0;
 var DONT_INCLUDE = 1;
