@@ -27,8 +27,10 @@ The following rules apply when (
 """
 For each $z in $(#topLeft ul li) (
   For each $t in $(#topLeft ul li) (
-    ($z and $t are left-aligned)
-    Or
-    ($z and $t are top-aligned)
+  	Not(
+    	($z and $t are left-aligned)
+    	Or
+    	($z and $t are top-aligned)
+    )
   )
 ).

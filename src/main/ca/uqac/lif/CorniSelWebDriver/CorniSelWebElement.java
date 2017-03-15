@@ -19,8 +19,24 @@ public class CorniSelWebElement extends WebElementDecorator{
 	
 	@Override
 	public void click() {
-		m_interpreter.evaluateAll(this.getWebElement());
-		super.click();
+		if(m_interpreter.getUpdateMode().equals(CorniSelWebDriver.UpdateMode.AUTOMATIC)) {
+			m_interpreter.evaluateAll(this.getWebElement());
+			super.click();
+		}
+		else {
+			super.click();
+		}
+	}
+	
+	@Override
+	public void submit() {
+		if(m_interpreter.getUpdateMode().equals(CorniSelWebDriver.UpdateMode.AUTOMATIC)) {
+			m_interpreter.evaluateAll(this.getWebElement());
+			super.submit();
+		}
+		else {
+			super.submit();
+		}
 	}
 	
 	@Override

@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Map.Entry;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -16,6 +17,8 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 import ca.uqac.lif.cornipickle.CornipickleParser.ParseException;
+import ca.uqac.lif.cornipickle.Interpreter.StatementMetadata;
+import ca.uqac.lif.cornipickle.Verdict;
 
 public class CorniSelWebDriverDecoratorTest {
 
@@ -51,6 +54,12 @@ public class CorniSelWebDriverDecoratorTest {
 		
 		m_corniSelDriver.get("https://www.xkcd.com");
 		m_corniSelDriver.findElement(By.id("topContainer")).click();
+		
+		for (Entry<StatementMetadata, Verdict> entry : m_corniSelDriver.getVerdicts().entrySet())
+		{
+			assertEquals(entry.getValue().getValue(), Verdict.Value.FALSE);
+		}
+		
 		m_corniSelDriver.close();
 	}
 

@@ -28,9 +28,9 @@ public class CorniSelWebDriver extends WebDriverDecorator implements ICornipickl
 	
 	private String m_script;
 	
-	public enum UpdateMode {MANUAL, AUTOMATIC};
+	public static enum UpdateMode {MANUAL, AUTOMATIC};
 	
-	public UpdateMode updateMode = UpdateMode.AUTOMATIC;
+	public UpdateMode m_updateMode = UpdateMode.AUTOMATIC;
 	
 	public CorniSelWebDriver(RemoteWebDriver driver) {
 		super(driver);
@@ -56,12 +56,11 @@ public class CorniSelWebDriver extends WebDriverDecorator implements ICornipickl
 			j = new JsonParser().parse(jsonString);
 			m_interpreter.evaluateAll(j);
 		} catch (JsonParseException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 	}
 	
-	public Map<StatementMetadata,Verdict> getVerdict() {
+	public Map<StatementMetadata,Verdict> getVerdicts() {
 		return m_interpreter.getVerdicts();
 	}
 	
@@ -216,6 +215,19 @@ public class CorniSelWebDriver extends WebDriverDecorator implements ICornipickl
 			cswelist.add(new CorniSelWebElement(element,this));
 		}
 		return cswelist;
+	}
+	
+	@Override
+	public UpdateMode getUpdateMode() {
+		return m_updateMode;
+	}
+	
+	public void setAutomaticMode() {
+		m_updateMode = UpdateMode.AUTOMATIC;
+	}
+	
+	public void setManualMode() {
+		m_updateMode = UpdateMode.MANUAL;
 	}
 	
 	private String readJS() {
