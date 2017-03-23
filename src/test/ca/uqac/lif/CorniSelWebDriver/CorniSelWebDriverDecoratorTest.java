@@ -27,7 +27,6 @@ public class CorniSelWebDriverDecoratorTest {
 	
 	@Before
 	public void setUp() throws Exception {
-		System.setProperty("webdriver.chrome.driver", "/usr/local/bin/chromedriver");
 		m_driver = new ChromeDriver();
 		m_corniSelDriver = new CorniSelWebDriver(m_driver);
 	}
