@@ -45,7 +45,6 @@ public class CorniSelWebDriver extends WebDriverDecorator implements ICornipickl
 
 	@Override
 	public void evaluateAll(WebElement event) {
-		System.out.println("Evaluation");
 		if(m_script.equals("")) {
 			m_script = readJS();
 		}
