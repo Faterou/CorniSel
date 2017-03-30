@@ -26,7 +26,7 @@ Every `click()` and `submit()` prompt Cornipickle to evaluate the page with the 
 
 ### Manual mode
 
-You have to call the function `evaluateAll(WebElement element)` to evaluate the page at its current state with element being the last element you clicked.
+You have to call the function `evaluateAll(WebElement element)` to evaluate the page at its current state with `element` being the last element you clicked.
 
 ## Results
 
