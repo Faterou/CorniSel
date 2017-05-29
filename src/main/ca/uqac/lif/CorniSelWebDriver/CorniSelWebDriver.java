@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
@@ -49,7 +48,7 @@ public class CorniSelWebDriver extends WebDriverDecorator implements ICornipickl
 			m_script = readJS();
 		}
 		
-		String jsonString = (String)(super.executeScript(m_script, event, m_interpreter.getAttributes(), m_interpreter.getTagNames()));
+		String jsonString = (String)(((RemoteWebDriver)super.m_webDriver).executeScript(m_script, event, m_interpreter.getAttributes(), m_interpreter.getTagNames()));
 		JsonElement j;
 		try {
 			j = new JsonParser().parse(jsonString);
@@ -71,144 +70,8 @@ public class CorniSelWebDriver extends WebDriverDecorator implements ICornipickl
 	}
 	
 	@Override
-	public WebElement findElementByClassName(String using) {
-		WebElement we = super.findElementByClassName(using);
-		CorniSelWebElement cswe = new CorniSelWebElement(we,this);
-		return cswe;
-	}
-	
-	@Override
-	public WebElement findElementByCssSelector(String using) {
-		WebElement we = super.findElementByCssSelector(using);
-		CorniSelWebElement cswe = new CorniSelWebElement(we,this);
-		return cswe;
-	}
-	
-	@Override
-	public WebElement findElementById(String using) {
-		WebElement we = super.findElementById(using);
-		CorniSelWebElement cswe = new CorniSelWebElement(we,this);
-		return cswe;
-	}
-	
-	@Override
-	public WebElement findElementByLinkText(String using) {
-		WebElement we = super.findElementByLinkText(using);
-		CorniSelWebElement cswe = new CorniSelWebElement(we,this);
-		return cswe;
-	}
-	
-	@Override
-	public WebElement findElementByName(String using) {
-		WebElement we = super.findElementByName(using);
-		CorniSelWebElement cswe = new CorniSelWebElement(we,this);
-		return cswe;
-	}
-	
-	@Override
-	public WebElement findElementByPartialLinkText(String using) {
-		WebElement we = super.findElementByPartialLinkText(using);
-		CorniSelWebElement cswe = new CorniSelWebElement(we,this);
-		return cswe;
-	}
-	
-	@Override
-	public WebElement findElementByTagName(String using) {
-		WebElement we = super.findElementByTagName(using);
-		CorniSelWebElement cswe = new CorniSelWebElement(we,this);
-		return cswe;
-	}
-	
-	@Override
-	public WebElement findElementByXPath(String using) {
-		WebElement we = super.findElementByXPath(using);
-		CorniSelWebElement cswe = new CorniSelWebElement(we,this);
-		return cswe;
-	}
-	
-	@Override
 	public List<WebElement> findElements(By by) {
 		List<WebElement> welist = super.findElements(by);
-		List<WebElement> cswelist = new ArrayList<WebElement>();
-		for(WebElement element : welist) {
-			cswelist.add(new CorniSelWebElement(element,this));
-		}
-		return cswelist;
-	}
-	
-	@Override
-	public List<WebElement> findElementsByClassName(String using) {
-		List<WebElement> welist = super.findElementsByClassName(using);
-		List<WebElement> cswelist = new ArrayList<WebElement>();
-		for(WebElement element : welist) {
-			cswelist.add(new CorniSelWebElement(element,this));
-		}
-		return cswelist;
-	}
-	
-	@Override
-	public List<WebElement> findElementsByCssSelector(String using) {
-		List<WebElement> welist = super.findElementsByCssSelector(using);
-		List<WebElement> cswelist = new ArrayList<WebElement>();
-		for(WebElement element : welist) {
-			cswelist.add(new CorniSelWebElement(element,this));
-		}
-		return cswelist;
-	}
-	
-	@Override
-	public List<WebElement> findElementsById(String using) {
-		List<WebElement> welist = super.findElementsById(using);
-		List<WebElement> cswelist = new ArrayList<WebElement>();
-		for(WebElement element : welist) {
-			cswelist.add(new CorniSelWebElement(element,this));
-		}
-		return cswelist;
-	}
-	
-	@Override
-	public List<WebElement> findElementsByLinkText(String using) {
-		List<WebElement> welist = super.findElementsByLinkText(using);
-		List<WebElement> cswelist = new ArrayList<WebElement>();
-		for(WebElement element : welist) {
-			cswelist.add(new CorniSelWebElement(element,this));
-		}
-		return cswelist;
-	}
-	
-	@Override
-	public List<WebElement> findElementsByName(String using) {
-		List<WebElement> welist = super.findElementsByName(using);
-		List<WebElement> cswelist = new ArrayList<WebElement>();
-		for(WebElement element : welist) {
-			cswelist.add(new CorniSelWebElement(element,this));
-		}
-		return cswelist;
-	}
-	
-	@Override
-	public List<WebElement> findElementsByPartialLinkText(String using) {
-		List<WebElement> welist = super.findElementsByPartialLinkText(using);
-		List<WebElement> cswelist = new ArrayList<WebElement>();
-		for(WebElement element : welist) {
-			cswelist.add(new CorniSelWebElement(element,this));
-		}
-		return cswelist;
-	}
-	
-	@Override
-	public List<WebElement> findElementsByTagName(String using) {
-		List<WebElement> welist = super.findElementsByTagName(using);
-		List<WebElement> cswelist = new ArrayList<WebElement>();
-		for(WebElement element : welist) {
-			cswelist.add(new CorniSelWebElement(element,this));
-		}
-		return cswelist;
-	}
-	
-	@Override
-	public List<WebElement> findElementsByXPath(String using) {
-		List<WebElement> welist = super.findElementsByXPath(using);
 		List<WebElement> cswelist = new ArrayList<WebElement>();
 		for(WebElement element : welist) {
 			cswelist.add(new CorniSelWebElement(element,this));

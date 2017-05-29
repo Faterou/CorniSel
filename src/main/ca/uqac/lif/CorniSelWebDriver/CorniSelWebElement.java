@@ -6,8 +6,6 @@ import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
-import ca.uqac.lif.cornipickle.Interpreter;
-
 public class CorniSelWebElement extends WebElementDecorator{
 	
 	private ICornipickleInterpreter m_interpreter;
