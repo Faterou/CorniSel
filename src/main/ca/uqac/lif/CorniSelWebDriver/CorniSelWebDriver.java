@@ -27,6 +27,8 @@ public class CorniSelWebDriver extends WebDriverDecorator implements ICornipickl
 	
 	private String m_script;
 	
+	private List<EvaluationListener> m_listeners;
+	
 	public static enum UpdateMode {MANUAL, AUTOMATIC};
 	
 	public UpdateMode m_updateMode = UpdateMode.AUTOMATIC;
@@ -35,6 +37,7 @@ public class CorniSelWebDriver extends WebDriverDecorator implements ICornipickl
 		super(driver);
 		m_interpreter = new Interpreter();
 		m_script = "";
+		m_listeners = new ArrayList<EvaluationListener>();
 	}
 	
 	@Override
@@ -55,6 +58,10 @@ public class CorniSelWebDriver extends WebDriverDecorator implements ICornipickl
 			m_interpreter.evaluateAll(j);
 		} catch (JsonParseException e1) {
 			e1.printStackTrace();
+		}
+		
+		for(EvaluationListener listener : m_listeners) {
+			listener.evaluationEvent(this);
 		}
 	}
 	
@@ -90,6 +97,13 @@ public class CorniSelWebDriver extends WebDriverDecorator implements ICornipickl
 	
 	public void setManualMode() {
 		m_updateMode = UpdateMode.MANUAL;
+	}
+	
+	/*
+	 * Add a listener that will throw an event every time an evaluation has finished
+	 */
+	public void addListener(EvaluationListener listener) {
+		m_listeners.add(listener);
 	}
 	
 	private String readJS() {
