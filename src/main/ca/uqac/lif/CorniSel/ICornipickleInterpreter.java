@@ -1,4 +1,4 @@
-package ca.uqac.lif.CorniSelWebDriver;
+package ca.uqac.lif.CorniSel;
 
 import org.openqa.selenium.WebElement;
 

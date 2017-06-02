@@ -17,6 +17,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 
 import ca.uqac.lif.cornipickle.CornipickleParser.ParseException;
 import ca.uqac.lif.cornipickle.Interpreter.StatementMetadata;
+import ca.uqac.lif.CorniSel.CorniSelWebDriver;
 import ca.uqac.lif.cornipickle.Verdict;
 
 public class CorniSelWebDriverDecoratorTest {
