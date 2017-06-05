@@ -1,7 +1,9 @@
 package ca.uqac.lif.CorniSel;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -62,8 +64,50 @@ public class CorniSelWebDriver extends WebDriverDecorator implements ICornipickl
 		}
 		
 		for(EvaluationListener listener : m_listeners) {
-			listener.evaluationEvent(this);
+			listener.evaluationEvent(this, m_interpreter);
 		}
+	}
+	
+	public void outputEvaluation(String filename) throws IOException{
+		Map<StatementMetadata,Verdict> verdicts = m_interpreter.getVerdicts();
+		String currentURL = super.m_webDriver.getCurrentUrl();
+		String width = String.valueOf(super.m_webDriver.manage().window().getSize().getWidth());
+		String height = String.valueOf(super.m_webDriver.manage().window().getSize().getHeight());
+		
+		FileWriter fw = new FileWriter(new File(filename), true);
+		
+		fw.write("-----------------------------------------------\n");
+		fw.write("Evaluation\n");
+		fw.write("URL: " + currentURL + "\n");
+		fw.write("Width: " + width + " px\n");
+		fw.write("Height: " + height + " px\n");
+		fw.write("Overall result: ");
+		
+		if(m_interpreter.getVerdicts().containsValue(Verdict.Value.FALSE))
+		{
+			fw.write("FALSE\n");
+		}
+		else if(verdicts.containsValue(Verdict.Value.INCONCLUSIVE))
+		{
+			fw.write("INCONCLUSIVE\n");
+		}
+		else
+		{
+			fw.write("TRUE\n");
+		}
+		
+		for(Map.Entry<StatementMetadata, Verdict> entry : verdicts.entrySet())
+		{
+			fw.write("Statement: " + entry.getKey().toString() + "\n");
+			fw.write("Verdict: " + entry.getValue().getValue().toString() + "\n");
+			if(entry.getValue().getValue() == Verdict.Value.FALSE)
+			{
+				fw.write("Witness: " + entry.getValue().getWitnessFalse().toString() + "\n");
+			}
+		}
+		
+		fw.write("\n\n");
+		fw.close();
 	}
 	
 	public Map<StatementMetadata,Verdict> getVerdicts() {
