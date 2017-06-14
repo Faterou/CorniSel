@@ -7,8 +7,9 @@ import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
-import ca.uqac.lif.CorniSel.CorniSelWebDriver;
-import ca.uqac.lif.CorniSel.CorniSelWebElement;
+
+import ca.uqac.lif.cornisel.CorniSelWebDriver;
+import ca.uqac.lif.cornisel.CorniSelWebElement;
 
 public class WebElementDecoratorTest {
 	private RemoteWebDriver m_driver;

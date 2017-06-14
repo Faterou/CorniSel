@@ -15,4 +15,7 @@
 hs_err_pid*
 
 bin/
-
+lib/
+docs/
+deps/
+doc/
