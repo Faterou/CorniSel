@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+  Configuration file for AntRun.
+  
+  Use this file to override the default properties contained
+  in build.xml. For example, to override the build.jar.filename
+  property (which sets the name of the compiled jar file), add
+  an element
+  
+  <jar>
+    <filename>foo</filename>
+  </jar>
+  
+  inside the <build> element.
+  
+  **Caveat emptor:** in some cases, changing this file and running ant
+  again will result in Ant using a cached version of the old file! Run
+  "ant dummy" to make sure that the correct data is being read. Otherwise
+  you might need to run "ant clean" and start over.
+-->
+<build>
+  <!-- Uncomment any of these if you want to override the build
+       script's default values -->
+
+  <!-- The project's name -->
+  <name>CorniSel</name>
+  
+  <!-- The project's version number -->
+  <version>1.0.0</version>
+  
+  <!-- The project's author. Currently this only
+  shows up in the footer of the Javadoc documentation. -->
+  <author>Francis Guérin</author>
+  
+  <!-- Output jar -->
+  <jar>
+    <filename>cornisel.jar</filename>
+  </jar>
+  
+  <!-- Redefine directories -->
+  <srcdir>src/main</srcdir>
+  <bindir>src/main/bin</bindir>
+  <test>
+    <srcdir>src/test</srcdir>
+    <bindir>src/test/bin</bindir>
+  </test>
+  
+  <!--
+    Write JAR dependencies here.
+  -->
+  <dependencies>
+    <dependency>
+      <!--
+      json-lif. Used to manage JSON objects
+      -->
+      <name>json-lif</name>
+      <classname>ca.uqac.lif.json.JsonMain</classname>
+      <files>
+        <zip>https://github.com/liflab/json-lif/releases/download/v1.6.2/json-lif-1.6.2.zip</zip>
+      </files>
+    </dependency>
+
+    <dependency>
+      <!--
+      Selenium Web Driver. Used for testing.
+      -->
+      <name>Selenium Web Driver</name>
+      <classname>org.openqa.selenium.WebDriver</classname>
+      <files>
+        <zip>http://selenium-release.storage.googleapis.com/3.4/selenium-java-3.4.0.zip</zip>
+      </files>
+    </dependency>
+    <dependency>
+      <!--
+      Selenium Server. Used for testing.
+      -->
+      <name>Selenium Server</name>
+      <classname>org.openqa.selenium.WebDriver</classname>
+      <files>
+        <zip>http://selenium-release.storage.googleapis.com/3.4/selenium-server-standalone-3.4.0.jar</zip>
+      </files>
+    </dependency>
+  </dependencies>
+</build>
