@@ -39,10 +39,10 @@
   
   <!-- Redefine directories -->
   <srcdir>src/main</srcdir>
-  <bindir>src/main/bin</bindir>
+  <bindir>src/bin</bindir>
   <test>
     <srcdir>src/test</srcdir>
-    <bindir>src/test/bin</bindir>
+    <bindir>src/bintest</bindir>
   </test>
   
   <!--
