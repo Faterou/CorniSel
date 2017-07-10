@@ -69,6 +69,16 @@ public class CorniSelWebDriver extends WebDriverDecorator implements ICornipickl
 		}
 	}
 	
+	@Override
+	public void resetHistory(){
+		m_interpreter.resetHistory();
+	}
+	
+	@Override
+	public void clear(){
+		m_interpreter.clear();
+	}
+	
 	public void outputEvaluation(String filename) throws IOException{
 		Map<StatementMetadata,Verdict> verdicts = m_interpreter.getVerdicts();
 		String currentURL = super.m_webDriver.getCurrentUrl();

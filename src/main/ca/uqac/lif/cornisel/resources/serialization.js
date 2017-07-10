@@ -281,6 +281,18 @@ var matchesSelector = function(selector, n)
 	return true;
 };
 
+var checkIfDirectChildIsTextNode = function(n)
+{
+    for(var i = 0; i < n.childNodes.length; i++)
+    {
+        if(!n.childNodes[i].tagName)
+        {
+            return INCLUDE;
+        }
+    }
+    return DONT_INCLUDE;
+};
+
 var includeInResult = function(n, path)
 {
 	var classlist = get_class_list(n);
@@ -310,6 +322,14 @@ var includeInResult = function(n, path)
 		{
 			return INCLUDE;
 		}
+	        else if(this.m_tagsToInclude[i] == "CDATA")
+	        {
+                return checkIfDirectChildIsTextNode(n);
+	        }
+	        else if(part == "*")
+	        {
+                return INCLUDE;
+	        }
 	}
 	return DONT_INCLUDE;
 };
@@ -338,7 +358,7 @@ var serializeMediaQueries = function()
 		}
 	}
 	return out;
-}
+};
 
 var serializeWindow = function(page_contents)
 {
@@ -349,6 +369,8 @@ var serializeWindow = function(page_contents)
 		"orientation" : get_orientation(),
 		"width" : window.document.documentElement.clientWidth,
 		"height" : window.document.documentElement.clientHeight,
+        "scroll-width" : window.document.documentElement.scrollWidth,
+        "scroll-height" : window.document.documentElement.scrollHeight,
 		"device-width" : window.screen.availWidth,
 		"device-height" : window.screen.availHeight,
 		"device-aspect-ratio" : window.screen.availWidth / window.screen.availHeight,
@@ -429,8 +451,10 @@ var serializePageContents = function(n, path, event)
 		}
 		else
 		{
+            registerNewElement(n.parentElement);
 			out.tagname = "CDATA";
 			out.text = n.nodeValue;
+            out.cornipickleid = n.parentElement.cornipickleid;
 			return out;
 		}
 	}
