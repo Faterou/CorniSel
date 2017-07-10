@@ -10,6 +10,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -83,20 +84,22 @@ public class CorniSelWebDriver extends WebDriverDecorator implements ICornipickl
 		fw.write("Height: " + height + " px\n");
 		fw.write("Overall result: ");
 		
-		if(m_interpreter.getVerdicts().containsValue(Verdict.Value.FALSE))
+		Verdict.Value overallVerdict = Verdict.Value.TRUE;
+		for(Entry<StatementMetadata, Verdict> entry : verdicts.entrySet())
 		{
-			fw.write("FALSE\n");
+			if(entry.getValue().is(Verdict.Value.INCONCLUSIVE))
+			{
+				overallVerdict = Verdict.Value.INCONCLUSIVE;
+			}
+			else if(entry.getValue().is(Verdict.Value.FALSE))
+			{
+				overallVerdict = Verdict.Value.FALSE;
+				break;
+			}
 		}
-		else if(verdicts.containsValue(Verdict.Value.INCONCLUSIVE))
-		{
-			fw.write("INCONCLUSIVE\n");
-		}
-		else
-		{
-			fw.write("TRUE\n");
-		}
+		fw.write(overallVerdict.toString());
 		
-		for(Map.Entry<StatementMetadata, Verdict> entry : verdicts.entrySet())
+		for(Entry<StatementMetadata, Verdict> entry : verdicts.entrySet())
 		{
 			fw.write("Statement: " + entry.getKey().toString() + "\n");
 			fw.write("Verdict: " + entry.getValue().getValue().toString() + "\n");

@@ -19,3 +19,6 @@ lib/
 docs/
 deps/
 doc/
+
+*.zip
+*.tar.gz
