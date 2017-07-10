@@ -97,7 +97,7 @@ public class CorniSelWebDriver extends WebDriverDecorator implements ICornipickl
 				break;
 			}
 		}
-		fw.write(overallVerdict.toString());
+		fw.write(overallVerdict.toString() + "\n");
 		
 		for(Entry<StatementMetadata, Verdict> entry : verdicts.entrySet())
 		{
