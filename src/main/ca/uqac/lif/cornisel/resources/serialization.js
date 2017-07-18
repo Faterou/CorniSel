@@ -15,11 +15,6 @@ var m_tagsToInclude = arguments[2];
 var INCLUDE = 0;
 var DONT_INCLUDE = 1;
 var DONT_INCLUDE_RECURSIVE = 2;
-/**
- * A global counter to give a unique ID to every element
- * encountered and reported back to the server
- */
-var elementCounter = 0;
 
 var m_idMap = {};
 
@@ -218,12 +213,18 @@ var registerNewElement = function(n)
 	{
 		return;
 	}
-	n.cornipickleid = elementCounter;
-	m_idMap[elementCounter] = {
+	var currentId = parseInt(window.sessionStorage.getItem("interpreterElementCounter"));
+	if(!currentId)
+	{
+		window.sessionStorage.setItem("interpreterElementCounter", 0);
+		currentId = 0;
+	}
+	n.cornipickleid = currentId;
+	m_idMap[currentId] = {
 		"element" : n,
 		"style" : {}
 	};
-	elementCounter++;
+	window.sessionStorage.setItem("interpreterElementCounter", currentId + 1);
 };
 
 
