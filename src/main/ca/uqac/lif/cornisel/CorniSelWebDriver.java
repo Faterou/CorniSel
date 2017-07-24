@@ -8,9 +8,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -22,6 +24,9 @@ import ca.uqac.lif.cornipickle.Interpreter.StatementMetadata;
 import ca.uqac.lif.cornipickle.Verdict;
 import ca.uqac.lif.cornipickle.CornipickleParser.ParseException;
 import ca.uqac.lif.json.JsonElement;
+import ca.uqac.lif.json.JsonList;
+import ca.uqac.lif.json.JsonMap;
+import ca.uqac.lif.json.JsonNumber;
 import ca.uqac.lif.json.JsonParser;
 import ca.uqac.lif.json.JsonParser.JsonParseException;
 
@@ -29,7 +34,9 @@ public class CorniSelWebDriver extends WebDriverDecorator implements ICornipickl
 
 	private Interpreter m_interpreter;
 	
-	private String m_script;
+	private String m_serializationScript;
+	
+	private String m_highlightScript;
 	
 	private List<EvaluationListener> m_listeners;
 	
@@ -40,7 +47,8 @@ public class CorniSelWebDriver extends WebDriverDecorator implements ICornipickl
 	public CorniSelWebDriver(RemoteWebDriver driver) {
 		super(driver);
 		m_interpreter = new Interpreter();
-		m_script = "";
+		m_serializationScript = readJS("resources/serialization.js");
+		m_highlightScript = readJS("resources/highlight.js");
 		m_listeners = new ArrayList<EvaluationListener>();
 	}
 	
@@ -51,11 +59,7 @@ public class CorniSelWebDriver extends WebDriverDecorator implements ICornipickl
 
 	@Override
 	public void evaluateAll(WebElement event) {
-		if(m_script.equals("")) {
-			m_script = readJS();
-		}
-		
-		String jsonString = (String)(((RemoteWebDriver)super.m_webDriver).executeScript(m_script, event, m_interpreter.getAttributes(), m_interpreter.getTagNames()));
+		String jsonString = (String)super.m_webDriver.executeScript(m_serializationScript, event, m_interpreter.getAttributes(), m_interpreter.getTagNames());
 		JsonElement j;
 		try {
 			j = new JsonParser().parse(jsonString);
@@ -63,6 +67,8 @@ public class CorniSelWebDriver extends WebDriverDecorator implements ICornipickl
 		} catch (JsonParseException e1) {
 			e1.printStackTrace();
 		}
+		
+		highlightElements();
 		
 		for(EvaluationListener listener : m_listeners) {
 			listener.evaluationEvent(this, m_interpreter);
@@ -303,12 +309,11 @@ public class CorniSelWebDriver extends WebDriverDecorator implements ICornipickl
 		}
 		return cswelist;
 	}
-
 	
-	private String readJS() {
+	private String readJS(String path) {
 		InputStream is;
 		try {
-			is = getClass().getResourceAsStream("resources/serialization.js");
+			is = getClass().getResourceAsStream(path);
 			BufferedReader bf = new BufferedReader(new InputStreamReader(is));
 			String inputLine;
 			String script = "";
@@ -324,5 +329,49 @@ public class CorniSelWebDriver extends WebDriverDecorator implements ICornipickl
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	private List<List<Number>> getIdsToHighlight(Verdict v)
+	{
+		List<List<Number>> ids = new LinkedList<List<Number>>();
+	    Set<Set<JsonElement>> tuples = v.getWitness().flatten();
+	    for (Set<JsonElement> tuple : tuples)
+	    {
+	    	LinkedList<Number> out = new LinkedList<Number>();
+	    	for (JsonElement e : tuple)
+	    	{
+	    		if (!(e instanceof JsonMap))
+	    		{
+	    			continue;
+	    		}
+	    		JsonMap m = (JsonMap) e;
+	    		JsonElement id = m.get("cornipickleid");
+	    		if (id == null || !(id instanceof JsonNumber))
+	    		{
+	    			continue;
+	    		}
+	    		out.add(((JsonNumber) id).numberValue());
+	    	}
+	    	ids.add(out);
+	    }
+	    return ids;
+	}
+	
+	private void highlightElements()
+	{
+		Map<StatementMetadata, Verdict> verdicts = m_interpreter.getVerdicts();
+		List<List<List<Number>>> highlight_ids = new LinkedList<List<List<Number>>>();
+		for (StatementMetadata key : verdicts.keySet())
+	    {
+	    	List<List<Number>> id_to_highlight = new LinkedList<List<Number>>();
+			Verdict v = verdicts.get(key);
+			if (v.is(Verdict.Value.FALSE))
+			{
+				id_to_highlight.addAll(getIdsToHighlight(v));
+			}
+			highlight_ids.add(id_to_highlight);
+	    }
+		
+		super.m_webDriver.executeScript(m_highlightScript, highlight_ids);
 	}
 }

@@ -16,8 +16,6 @@ var INCLUDE = 0;
 var DONT_INCLUDE = 1;
 var DONT_INCLUDE_RECURSIVE = 2;
 
-var m_idMap = {};
-
 var remove_units = function(s)
 {
 	if (typeof s == "string" || s instanceof String)
@@ -220,7 +218,7 @@ var registerNewElement = function(n)
 		currentId = 0;
 	}
 	n.cornipickleid = currentId;
-	m_idMap[currentId] = {
+	window.m_idMap[currentId] = {
 		"element" : n,
 		"style" : {}
 	};
@@ -315,6 +313,10 @@ var includeInResult = function(n, path)
 		{
 			return INCLUDE;
 		}
+	}
+	if(n.tagName === "svg")
+	{
+		return DONT_INCLUDE_RECURSIVE;
 	}
 	for (var i = 0; i < m_tagsToInclude.length; i++)
 	{
@@ -478,6 +480,22 @@ var serializePageContents = function(n, path, event)
 	}
 	return out;
 };
+
+var unhighlightElements = function()
+{
+	if(document.getElementById("cp-highlight"))
+	{
+		var elem = document.getElementById("cp-highlight");
+		elem.parentNode.removeChild(elem);
+	}
+};
+
+unhighlightElements();
+
+if(!(window.m_idMap))
+{
+	window.m_idMap = {};
+}
 
 var json = serializePageContents(document.body, [], arguments[0]);
 return JSON.stringify(serializeWindow(json));
