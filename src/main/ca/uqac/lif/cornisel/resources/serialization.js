@@ -64,6 +64,10 @@ var get_class_list = function(element)
 var cumulativeOffset = function(element)
 {
 	var top = 0, left = 0;
+	if(element.classList.contains("nav-menu"))
+	{
+		console.log(element.offsetTop);
+	}
 	do
 	{
 		top += element.offsetTop  || 0;
@@ -304,7 +308,7 @@ var includeInResult = function(n, path)
 	}
 	if (!n.tagName) // This is a text node
 	{
-		if (n.nodeValue.trim() === "")
+		if (n.nodeValue.trim() === "" || n.nodeType == 8) //8 is a comment node
 		{
 			// Don't include nodes containing only whitespace
 			return DONT_INCLUDE_RECURSIVE;
@@ -314,7 +318,7 @@ var includeInResult = function(n, path)
 			return INCLUDE;
 		}
 	}
-	if(n.tagName === "svg")
+	if(n.tagName.toLowerCase() === "svg" || n.tagName.toLowerCase() === "script")
 	{
 		return DONT_INCLUDE_RECURSIVE;
 	}
