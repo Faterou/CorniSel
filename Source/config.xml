@@ -38,11 +38,12 @@
   </jar>
   
   <!-- Redefine directories -->
-  <srcdir>src/main</srcdir>
-  <bindir>src/bin</bindir>
+  <srcdir>Core/src</srcdir>
+  <bindir>Core/bin</bindir>
+  <depdir>Core/dep</depdir>
   <test>
-    <srcdir>src/test</srcdir>
-    <bindir>src/bintest</bindir>
+    <srcdir>CoreTest/src</srcdir>
+    <bindir>CoreTest/bin</bindir>
   </test>
   
   <!--
@@ -51,23 +52,24 @@
   <dependencies>
     <dependency>
       <!--
-      json-lif. Used to manage JSON objects
+      Cornipickle
       -->
-      <name>json-lif</name>
-      <classname>ca.uqac.lif.json.JsonMain</classname>
+      <name>Cornipickle</name>
+      <bundle>true</bundle>
+      <classname>ca.uqac.lif.cornipickle.server.Main</classname>
       <files>
-        <zip>https://github.com/liflab/json-lif/releases/download/v1.6.2/json-lif-1.6.2.zip</zip>
+        <zip>https://github.com/liflab/cornipickle/releases/download/v1.3.2/cornipickle-1.3.2.zip</zip>
       </files>
     </dependency>
-
     <dependency>
       <!--
       Selenium Web Driver. Used for testing.
       -->
       <name>Selenium Web Driver</name>
+      <bundle>false</bundle>
       <classname>org.openqa.selenium.WebDriver</classname>
       <files>
-        <zip>http://selenium-release.storage.googleapis.com/3.4/selenium-java-3.4.0.zip</zip>
+        <zip>http://selenium-release.storage.googleapis.com/3.11/selenium-java-3.11.0.zip</zip>
       </files>
     </dependency>
     <dependency>
@@ -75,9 +77,10 @@
       Selenium Server. Used for testing.
       -->
       <name>Selenium Server</name>
+      <bundle>false</bundle>
       <classname>org.openqa.selenium.WebDriver</classname>
       <files>
-        <zip>http://selenium-release.storage.googleapis.com/3.4/selenium-server-standalone-3.4.0.jar</zip>
+        <jar>http://selenium-release.storage.googleapis.com/3.11/selenium-server-standalone-3.11.0.jar</jar>
       </files>
     </dependency>
   </dependencies>

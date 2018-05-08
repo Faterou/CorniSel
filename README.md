@@ -1,13 +1,16 @@
 # CorniSel
+
 A selenium web driver wrapper in Java that uses Cornipickle's tests.
 
 With CorniSel, it is possible to use Selenium to drive your tests like you always did while automatically testing your web pages using properties in the [Cornipickle](https://github.com/liflab/cornipickle) language.
 
 ## Dependencies
+
 - [Selenium](http://www.seleniumhq.org/download/)
 - [Cornipickle](https://github.com/liflab/cornipickle)
 
 ## Usage
+
 ```
 RemoteWebDriver chromeDriver = new ChromeDriver();
 CorniSelWebDriver corniSelDriver = new CorniSelWebDriver(chromeDriver);
