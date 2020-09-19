@@ -10,9 +10,6 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -20,6 +17,8 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.remote.RemoteWebElement;
 
 import ca.uqac.lif.cornipickle.assertions.Function;
+import ca.uqac.lif.cornipickle.assertions.TestCondition;
+import ca.uqac.lif.cornipickle.assertions.TestResult;
 
 public class CornipickleDriver extends WebDriverDecorator implements TestOracle{
 
@@ -33,16 +32,30 @@ public class CornipickleDriver extends WebDriverDecorator implements TestOracle{
 	
 	public UpdateMode m_updateMode = UpdateMode.AUTOMATIC;
 	
+	protected boolean m_evaluatedOnce = false;
+	
 	public CornipickleDriver(RemoteWebDriver driver) {
 		super(driver);
 		m_interpreter = new Interpreter();
-		m_highlightScript = readJS("resources/highlight.js");
+		m_highlightScript = "";
 		m_listeners = new ArrayList<EvaluationListener>();
 	}
 	
 	@Override
-	public void check(Function property) {
+	public CornipickleDriver check(String name, Function property) {
+		m_interpreter.check(new TestCondition(name, property));
+		return this;
+	}
+	
+	@Override
+	public CornipickleDriver check(Function property) {
 		m_interpreter.check(property);
+		return this;
+	}
+	
+	public CornipickleDriver check() {
+		evaluateAll(null);
+		return this;
 	}
 
 	@Override
@@ -59,16 +72,18 @@ public class CornipickleDriver extends WebDriverDecorator implements TestOracle{
 	
 	@Override
 	public void resetHistory(){
+		m_evaluatedOnce = false;
 		m_interpreter.resetHistory();
 	}
 	
 	@Override
 	public void clear(){
+		m_evaluatedOnce = false;
 		m_interpreter.clear();
 	}
 	
 	public void outputEvaluation(String filename) throws IOException{
-		Verdict verdict = m_interpreter.getVerdict();
+		TestResult verdict = m_interpreter.getVerdict();
 		String currentURL = super.m_webDriver.getCurrentUrl();
 		String width = String.valueOf(super.m_webDriver.manage().window().getSize().getWidth());
 		String height = String.valueOf(super.m_webDriver.manage().window().getSize().getHeight());
@@ -89,7 +104,12 @@ public class CornipickleDriver extends WebDriverDecorator implements TestOracle{
 		fw.close();
 	}
 	
-	public Verdict getVerdict() {
+	@Override
+	public TestResult getResult() {
+		if (!m_evaluatedOnce)
+		{
+			check();
+		}
 		return m_interpreter.getVerdict();
 	}
 	
@@ -289,7 +309,7 @@ public class CornipickleDriver extends WebDriverDecorator implements TestOracle{
 	
 	private void highlightElements()
 	{
-		Verdict verdict = m_interpreter.getVerdict();
+		TestResult verdict = m_interpreter.getVerdict();
 		List<List<List<Number>>> highlight_ids = new LinkedList<List<List<Number>>>();
 		super.m_webDriver.executeScript(m_highlightScript, highlight_ids);
 	}

@@ -8,7 +8,10 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import ca.uqac.lif.cornipickle.assertions.Function;
+import ca.uqac.lif.cornipickle.assertions.TestCondition;
 import ca.uqac.lif.cornipickle.assertions.Value;
+import ca.uqac.lif.cornipickle.assertions.Verdict;
+import ca.uqac.lif.cornipickle.assertions.TestResult;
 
 public class Interpreter
 {
@@ -52,8 +55,13 @@ public class Interpreter
 		}
 	}
 	
-	public Verdict getVerdict()
+	public TestResult getVerdict()
 	{
-		return new Verdict(m_returnedValues);
+		List<Verdict> verdicts = new ArrayList<Verdict>(m_conditions.size());
+		for (int i = 0; i < m_conditions.size(); i++)
+		{
+			verdicts.add(new Verdict(m_returnedValues.get(i), m_conditions.get(i)));
+		}
+		return new TestResult(verdicts);
 	}
 }

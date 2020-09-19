@@ -24,6 +24,19 @@ public class AssertionExplainer implements Explainer
 		tracer.setSimplify(simplify);
 		return tracer.getTree(TraceabilityQuery.CausalityQuery.instance, Function.ReturnValue.instance, v);
 	}
+	
+	public static void explainAndDraw(TestResult v, boolean flatten, String filename)
+	{
+		for (Verdict verdict : v.getVerdicts())
+		{
+			if (!verdict.getResult())
+			{
+				// We explain the first violation
+				explainAndDraw(verdict.getValue(), flatten, filename);
+				break;
+			}
+		}
+	}
 
 	public static void explainAndDraw(Value v, boolean flatten, String filename)
 	{

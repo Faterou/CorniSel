@@ -15,9 +15,9 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
+import ca.uqac.lif.cornipickle.assertions.TestResult;
 import ca.uqac.lif.cornipickle.driver.CornipickleDriver;
 import ca.uqac.lif.cornipickle.driver.StatementMetadata;
-import ca.uqac.lif.cornipickle.driver.Verdict;
 
 public class CorniSelWebDriverDecoratorTest {
 
@@ -52,7 +52,7 @@ public class CorniSelWebDriverDecoratorTest {
 		
 		m_corniSelDriver.get("https://www.xkcd.com");
 		m_corniSelDriver.findElement(By.id("topContainer")).click();
-		Verdict v =  m_corniSelDriver.getVerdict();
+		TestResult v =  m_corniSelDriver.getResult();
 		assertEquals(v.getResult(), false);
 		m_corniSelDriver.close();
 	}
