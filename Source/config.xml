@@ -74,6 +74,17 @@
     </dependency>
     <dependency>
       <!--
+      Azrael. Used for serialization.
+      -->
+      <name>Azrael Core</name>
+      <bundle>true</bundle>
+      <classname>ca.uqac.lif.azrael.Printable</classname>
+      <files>
+        <zip>https://github.com/sylvainhalle/Azrael/releases/download/v2.0.1/azrael-core.jar</zip>
+      </files>
+    </dependency>
+    <dependency>
+      <!--
       Selenium Server. Used for testing.
       -->
       <name>Selenium Server</name>

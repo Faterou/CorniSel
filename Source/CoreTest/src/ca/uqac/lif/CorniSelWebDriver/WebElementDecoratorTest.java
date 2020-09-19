@@ -8,8 +8,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
-import ca.uqac.lif.cornisel.CornipickleDriver;
-import ca.uqac.lif.cornisel.CornipickleWebElement;
+import ca.uqac.lif.cornipickle.driver.CornipickleDriver;
+import ca.uqac.lif.cornipickle.driver.CornipickleWebElement;
 
 public class WebElementDecoratorTest {
 	private RemoteWebDriver m_driver;

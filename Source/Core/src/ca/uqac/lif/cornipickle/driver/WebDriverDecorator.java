@@ -1,4 +1,4 @@
-package ca.uqac.lif.cornisel;
+package ca.uqac.lif.cornipickle.driver;
 
 import java.util.Collection;
 import java.util.List;

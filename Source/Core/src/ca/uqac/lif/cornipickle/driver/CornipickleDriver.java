@@ -1,4 +1,4 @@
-package ca.uqac.lif.cornisel;
+package ca.uqac.lif.cornipickle.driver;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -18,6 +18,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.remote.RemoteWebElement;
+
+import ca.uqac.lif.cornipickle.assertions.Function;
 
 public class CornipickleDriver extends WebDriverDecorator implements TestOracle{
 
@@ -39,8 +41,8 @@ public class CornipickleDriver extends WebDriverDecorator implements TestOracle{
 	}
 	
 	@Override
-	public void setCornipickleProperties(String properties) {
-		m_interpreter.parseProperties(properties);
+	public void check(Function property) {
+		m_interpreter.check(property);
 	}
 
 	@Override

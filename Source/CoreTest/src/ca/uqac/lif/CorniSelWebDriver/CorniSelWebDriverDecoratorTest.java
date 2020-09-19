@@ -15,9 +15,9 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
-import ca.uqac.lif.cornisel.CornipickleDriver;
-import ca.uqac.lif.cornisel.StatementMetadata;
-import ca.uqac.lif.cornisel.Verdict;
+import ca.uqac.lif.cornipickle.driver.CornipickleDriver;
+import ca.uqac.lif.cornipickle.driver.StatementMetadata;
+import ca.uqac.lif.cornipickle.driver.Verdict;
 
 public class CorniSelWebDriverDecoratorTest {
 
@@ -48,7 +48,7 @@ public class CorniSelWebDriverDecoratorTest {
 			e.printStackTrace();
 		}
 		
-		m_corniSelDriver.setCornipickleProperties(properties);
+		//m_corniSelDriver.check(properties);
 		
 		m_corniSelDriver.get("https://www.xkcd.com");
 		m_corniSelDriver.findElement(By.id("topContainer")).click();

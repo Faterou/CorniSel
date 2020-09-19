@@ -1,8 +1,10 @@
-package ca.uqac.lif.cornisel;
+package ca.uqac.lif.cornipickle.driver;
 
 import java.util.Map;
 
 import org.openqa.selenium.WebDriver;
+
+import ca.uqac.lif.cornipickle.assertions.Function;
 
 public class Interpreter
 {
@@ -16,7 +18,7 @@ public class Interpreter
 		
 	}
 	
-	public void parseProperties(String s)
+	public void check(Function property)
 	{
 		
 	}
