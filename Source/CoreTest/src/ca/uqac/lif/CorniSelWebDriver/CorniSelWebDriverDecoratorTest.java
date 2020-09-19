@@ -52,12 +52,8 @@ public class CorniSelWebDriverDecoratorTest {
 		
 		m_corniSelDriver.get("https://www.xkcd.com");
 		m_corniSelDriver.findElement(By.id("topContainer")).click();
-		
-		for (Entry<StatementMetadata, Verdict> entry : m_corniSelDriver.getVerdicts().entrySet())
-		{
-			assertEquals(entry.getValue().getResult(), false);
-		}
-		
+		Verdict v =  m_corniSelDriver.getVerdict();
+		assertEquals(v.getResult(), false);
 		m_corniSelDriver.close();
 	}
 

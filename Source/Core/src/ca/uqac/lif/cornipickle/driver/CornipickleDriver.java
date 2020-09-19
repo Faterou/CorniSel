@@ -47,7 +47,8 @@ public class CornipickleDriver extends WebDriverDecorator implements TestOracle{
 
 	@Override
 	public void evaluateAll(WebElement event) {
-		m_interpreter.evaluateAll(m_webDriver);
+		WebElement root = m_webDriver.findElement(By.tagName("body"));
+		m_interpreter.evaluateAll(root);
 		
 		highlightElements();
 		
@@ -67,7 +68,7 @@ public class CornipickleDriver extends WebDriverDecorator implements TestOracle{
 	}
 	
 	public void outputEvaluation(String filename) throws IOException{
-		Map<StatementMetadata,Verdict> verdicts = m_interpreter.getVerdicts();
+		Verdict verdict = m_interpreter.getVerdict();
 		String currentURL = super.m_webDriver.getCurrentUrl();
 		String width = String.valueOf(super.m_webDriver.manage().window().getSize().getWidth());
 		String height = String.valueOf(super.m_webDriver.manage().window().getSize().getHeight());
@@ -81,37 +82,15 @@ public class CornipickleDriver extends WebDriverDecorator implements TestOracle{
 		fw.write("Height: " + height + " px\n");
 		fw.write("Overall result: ");
 		
-		Boolean overallVerdict = true;
-		for(Entry<StatementMetadata, Verdict> entry : verdicts.entrySet())
-		{
-			if(entry.getValue().getResult() == false)
-			{
-				overallVerdict = false;
-				break;
-			}
-		}
+		Boolean overallVerdict = verdict.getResult();
 		fw.write(overallVerdict.toString() + "\n\n");
-		
-		for(Entry<StatementMetadata, Verdict> entry : verdicts.entrySet())
-		{
-			fw.write("Statement:\n" + entry.getKey().toString());
-			fw.write("Verdict: " + entry.getValue().getResult().toString() + "\n");
-			if(entry.getValue().getResult() == false)
-			{
-				//fw.write("Witness: " + entry.getValue().getWitnessFalse().toString() + "\n\n");
-			}
-			else
-			{
-				fw.write("\n");
-			}
-		}
-		
+		fw.write(verdict.toString());		
 		fw.write("\n");
 		fw.close();
 	}
 	
-	public Map<StatementMetadata,Verdict> getVerdicts() {
-		return m_interpreter.getVerdicts();
+	public Verdict getVerdict() {
+		return m_interpreter.getVerdict();
 	}
 	
 	@Override
@@ -308,27 +287,10 @@ public class CornipickleDriver extends WebDriverDecorator implements TestOracle{
 		return null;
 	}
 	
-	private List<List<Number>> getIdsToHighlight(Verdict v)
-	{
-		List<List<Number>> ids = new LinkedList<List<Number>>();
-	    return ids;
-	}
-	
 	private void highlightElements()
 	{
-		Map<StatementMetadata, Verdict> verdicts = m_interpreter.getVerdicts();
+		Verdict verdict = m_interpreter.getVerdict();
 		List<List<List<Number>>> highlight_ids = new LinkedList<List<List<Number>>>();
-		for (StatementMetadata key : verdicts.keySet())
-	    {
-	    	List<List<Number>> id_to_highlight = new LinkedList<List<Number>>();
-			Verdict v = verdicts.get(key);
-			if (v.getResult() == false)
-			{
-				id_to_highlight.addAll(getIdsToHighlight(v));
-			}
-			highlight_ids.add(id_to_highlight);
-	    }
-		
 		super.m_webDriver.executeScript(m_highlightScript, highlight_ids);
 	}
 }
