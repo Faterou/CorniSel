@@ -21,12 +21,11 @@ import org.openqa.selenium.internal.FindsByName;
 import org.openqa.selenium.internal.FindsByTagName;
 import org.openqa.selenium.internal.FindsByXPath;
 import org.openqa.selenium.internal.HasIdentity;
-import org.openqa.selenium.internal.Locatable;
 import org.openqa.selenium.internal.WrapsDriver;
 import org.openqa.selenium.remote.RemoteWebElement;
 
 public class WebElementDecorator implements WebElement, FindsByClassName, FindsByCssSelector, FindsById,
-	FindsByLinkText, FindsByName, FindsByTagName, FindsByXPath, HasIdentity, Locatable, WrapsDriver, 
+	FindsByLinkText, FindsByName, FindsByTagName, FindsByXPath, HasIdentity, WrapsDriver, 
 	SearchContext, TakesScreenshot{
 
 	private RemoteWebElement m_webElement;
@@ -127,11 +126,6 @@ public class WebElementDecorator implements WebElement, FindsByClassName, FindsB
 	@Override
 	public WebDriver getWrappedDriver() {
 		return m_webElement.getWrappedDriver();
-	}
-
-	@Override
-	public Coordinates getCoordinates() {
-		return m_webElement.getCoordinates();
 	}
 
 	@Override

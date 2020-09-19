@@ -9,9 +9,9 @@ import org.openqa.selenium.remote.RemoteWebElement;
 
 public class CorniSelWebElement extends WebElementDecorator{
 	
-	private ICornipickleInterpreter m_interpreter;
+	private TestOracle m_interpreter;
 
-	public CorniSelWebElement(RemoteWebElement webElement, ICornipickleInterpreter interpreter) {
+	public CorniSelWebElement(RemoteWebElement webElement, TestOracle interpreter) {
 		super(webElement);
 		m_interpreter = interpreter;
 	}

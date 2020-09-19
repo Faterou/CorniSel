@@ -19,22 +19,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.remote.RemoteWebElement;
 
-import ca.uqac.lif.cornipickle.Interpreter;
-import ca.uqac.lif.cornipickle.Interpreter.StatementMetadata;
-import ca.uqac.lif.cornipickle.Verdict;
-import ca.uqac.lif.cornipickle.CornipickleParser.ParseException;
-import ca.uqac.lif.json.JsonElement;
-import ca.uqac.lif.json.JsonList;
-import ca.uqac.lif.json.JsonMap;
-import ca.uqac.lif.json.JsonNumber;
-import ca.uqac.lif.json.JsonParser;
-import ca.uqac.lif.json.JsonParser.JsonParseException;
-
-public class CorniSelWebDriver extends WebDriverDecorator implements ICornipickleInterpreter{
+public class CorniSelWebDriver extends WebDriverDecorator implements TestOracle{
 
 	private Interpreter m_interpreter;
-	
-	private String m_serializationScript;
 	
 	private String m_highlightScript;
 	
@@ -47,26 +34,18 @@ public class CorniSelWebDriver extends WebDriverDecorator implements ICornipickl
 	public CorniSelWebDriver(RemoteWebDriver driver) {
 		super(driver);
 		m_interpreter = new Interpreter();
-		m_serializationScript = readJS("resources/serialization.js");
 		m_highlightScript = readJS("resources/highlight.js");
 		m_listeners = new ArrayList<EvaluationListener>();
 	}
 	
 	@Override
-	public void setCornipickleProperties(String properties) throws ParseException{
+	public void setCornipickleProperties(String properties) {
 		m_interpreter.parseProperties(properties);
 	}
 
 	@Override
 	public void evaluateAll(WebElement event) {
-		String jsonString = (String)super.m_webDriver.executeScript(m_serializationScript, event, m_interpreter.getAttributes(), m_interpreter.getTagNames());
-		JsonElement j;
-		try {
-			j = new JsonParser().parse(jsonString);
-			m_interpreter.evaluateAll(j);
-		} catch (JsonParseException e1) {
-			e1.printStackTrace();
-		}
+		m_interpreter.evaluateAll(m_webDriver);
 		
 		highlightElements();
 		
@@ -100,16 +79,12 @@ public class CorniSelWebDriver extends WebDriverDecorator implements ICornipickl
 		fw.write("Height: " + height + " px\n");
 		fw.write("Overall result: ");
 		
-		Verdict.Value overallVerdict = Verdict.Value.TRUE;
+		Boolean overallVerdict = true;
 		for(Entry<StatementMetadata, Verdict> entry : verdicts.entrySet())
 		{
-			if(entry.getValue().is(Verdict.Value.INCONCLUSIVE))
+			if(entry.getValue().getResult() == false)
 			{
-				overallVerdict = Verdict.Value.INCONCLUSIVE;
-			}
-			else if(entry.getValue().is(Verdict.Value.FALSE))
-			{
-				overallVerdict = Verdict.Value.FALSE;
+				overallVerdict = false;
 				break;
 			}
 		}
@@ -118,10 +93,10 @@ public class CorniSelWebDriver extends WebDriverDecorator implements ICornipickl
 		for(Entry<StatementMetadata, Verdict> entry : verdicts.entrySet())
 		{
 			fw.write("Statement:\n" + entry.getKey().toString());
-			fw.write("Verdict: " + entry.getValue().getValue().toString() + "\n");
-			if(entry.getValue().getValue() == Verdict.Value.FALSE)
+			fw.write("Verdict: " + entry.getValue().getResult().toString() + "\n");
+			if(entry.getValue().getResult() == false)
 			{
-				fw.write("Witness: " + entry.getValue().getWitnessFalse().toString() + "\n\n");
+				//fw.write("Witness: " + entry.getValue().getWitnessFalse().toString() + "\n\n");
 			}
 			else
 			{
@@ -334,26 +309,6 @@ public class CorniSelWebDriver extends WebDriverDecorator implements ICornipickl
 	private List<List<Number>> getIdsToHighlight(Verdict v)
 	{
 		List<List<Number>> ids = new LinkedList<List<Number>>();
-	    Set<Set<JsonElement>> tuples = v.getWitness().flatten();
-	    for (Set<JsonElement> tuple : tuples)
-	    {
-	    	LinkedList<Number> out = new LinkedList<Number>();
-	    	for (JsonElement e : tuple)
-	    	{
-	    		if (!(e instanceof JsonMap))
-	    		{
-	    			continue;
-	    		}
-	    		JsonMap m = (JsonMap) e;
-	    		JsonElement id = m.get("cornipickleid");
-	    		if (id == null || !(id instanceof JsonNumber))
-	    		{
-	    			continue;
-	    		}
-	    		out.add(((JsonNumber) id).numberValue());
-	    	}
-	    	ids.add(out);
-	    }
 	    return ids;
 	}
 	
@@ -365,7 +320,7 @@ public class CorniSelWebDriver extends WebDriverDecorator implements ICornipickl
 	    {
 	    	List<List<Number>> id_to_highlight = new LinkedList<List<Number>>();
 			Verdict v = verdicts.get(key);
-			if (v.is(Verdict.Value.FALSE))
+			if (v.getResult() == false)
 			{
 				id_to_highlight.addAll(getIdsToHighlight(v));
 			}

@@ -15,10 +15,9 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
-import ca.uqac.lif.cornipickle.CornipickleParser.ParseException;
-import ca.uqac.lif.cornipickle.Interpreter.StatementMetadata;
 import ca.uqac.lif.cornisel.CorniSelWebDriver;
-import ca.uqac.lif.cornipickle.Verdict;
+import ca.uqac.lif.cornisel.StatementMetadata;
+import ca.uqac.lif.cornisel.Verdict;
 
 public class CorniSelWebDriverDecoratorTest {
 
@@ -32,7 +31,7 @@ public class CorniSelWebDriverDecoratorTest {
 	}
 	
 	@Test
-	public void testFindElementBy() throws ParseException {
+	public void testFindElementBy() {
 		InputStream is;
 		String properties = "";
 		try {
@@ -56,7 +55,7 @@ public class CorniSelWebDriverDecoratorTest {
 		
 		for (Entry<StatementMetadata, Verdict> entry : m_corniSelDriver.getVerdicts().entrySet())
 		{
-			assertEquals(entry.getValue().getValue(), Verdict.Value.FALSE);
+			assertEquals(entry.getValue().getResult(), false);
 		}
 		
 		m_corniSelDriver.close();
