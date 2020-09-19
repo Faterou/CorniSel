@@ -1,5 +1,5 @@
 package ca.uqac.lif.cornisel;
 
 public interface EvaluationListener {
-	void evaluationEvent(CorniSelWebDriver driver, Interpreter interpreter);
+	void evaluationEvent(CornipickleDriver driver, Interpreter interpreter);
 }

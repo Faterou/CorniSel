@@ -19,7 +19,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.remote.RemoteWebElement;
 
-public class CorniSelWebDriver extends WebDriverDecorator implements TestOracle{
+public class CornipickleDriver extends WebDriverDecorator implements TestOracle{
 
 	private Interpreter m_interpreter;
 	
@@ -31,7 +31,7 @@ public class CorniSelWebDriver extends WebDriverDecorator implements TestOracle{
 	
 	public UpdateMode m_updateMode = UpdateMode.AUTOMATIC;
 	
-	public CorniSelWebDriver(RemoteWebDriver driver) {
+	public CornipickleDriver(RemoteWebDriver driver) {
 		super(driver);
 		m_interpreter = new Interpreter();
 		m_highlightScript = readJS("resources/highlight.js");
@@ -135,7 +135,7 @@ public class CorniSelWebDriver extends WebDriverDecorator implements TestOracle{
 	@Override
 	public WebElement findElement(By by) {
 		WebElement we = super.findElement(by);
-		CorniSelWebElement cswe = new CorniSelWebElement((RemoteWebElement)we,this);
+		CornipickleWebElement cswe = new CornipickleWebElement((RemoteWebElement)we,this);
 		return cswe;
 	}
 	
@@ -144,7 +144,7 @@ public class CorniSelWebDriver extends WebDriverDecorator implements TestOracle{
 		List<WebElement> welist = super.findElements(by);
 		List<WebElement> cswelist = new ArrayList<WebElement>();
 		for(WebElement element : welist) {
-			cswelist.add(new CorniSelWebElement((RemoteWebElement)element,this));
+			cswelist.add(new CornipickleWebElement((RemoteWebElement)element,this));
 		}
 		return cswelist;
 	}
@@ -152,7 +152,7 @@ public class CorniSelWebDriver extends WebDriverDecorator implements TestOracle{
 	@Override
 	public WebElement findElementByXPath(String arg0) {
 		WebElement we = super.findElementByXPath(arg0);
-		CorniSelWebElement cswe = new CorniSelWebElement((RemoteWebElement)we,this);
+		CornipickleWebElement cswe = new CornipickleWebElement((RemoteWebElement)we,this);
 		return cswe;
 	}
 
@@ -161,7 +161,7 @@ public class CorniSelWebDriver extends WebDriverDecorator implements TestOracle{
 		List<WebElement> welist = super.findElementsByXPath(arg0);
 		List<WebElement> cswelist = new ArrayList<WebElement>();
 		for(WebElement element : welist) {
-			cswelist.add(new CorniSelWebElement((RemoteWebElement)element,this));
+			cswelist.add(new CornipickleWebElement((RemoteWebElement)element,this));
 		}
 		return cswelist;
 	}
@@ -169,7 +169,7 @@ public class CorniSelWebDriver extends WebDriverDecorator implements TestOracle{
 	@Override
 	public WebElement findElementByTagName(String arg0) {
 		WebElement we = super.findElementByTagName(arg0);
-		CorniSelWebElement cswe = new CorniSelWebElement((RemoteWebElement)we,this);
+		CornipickleWebElement cswe = new CornipickleWebElement((RemoteWebElement)we,this);
 		return cswe;
 	}
 
@@ -178,7 +178,7 @@ public class CorniSelWebDriver extends WebDriverDecorator implements TestOracle{
 		List<WebElement> welist = super.findElementsByTagName(arg0);
 		List<WebElement> cswelist = new ArrayList<WebElement>();
 		for(WebElement element : welist) {
-			cswelist.add(new CorniSelWebElement((RemoteWebElement)element,this));
+			cswelist.add(new CornipickleWebElement((RemoteWebElement)element,this));
 		}
 		return cswelist;
 	}
@@ -186,7 +186,7 @@ public class CorniSelWebDriver extends WebDriverDecorator implements TestOracle{
 	@Override
 	public WebElement findElementByName(String arg0) {
 		WebElement we = super.findElementByName(arg0);
-		CorniSelWebElement cswe = new CorniSelWebElement((RemoteWebElement)we,this);
+		CornipickleWebElement cswe = new CornipickleWebElement((RemoteWebElement)we,this);
 		return cswe;
 	}
 
@@ -195,7 +195,7 @@ public class CorniSelWebDriver extends WebDriverDecorator implements TestOracle{
 		List<WebElement> welist = super.findElementsByName(arg0);
 		List<WebElement> cswelist = new ArrayList<WebElement>();
 		for(WebElement element : welist) {
-			cswelist.add(new CorniSelWebElement((RemoteWebElement)element,this));
+			cswelist.add(new CornipickleWebElement((RemoteWebElement)element,this));
 		}
 		return cswelist;
 	}
@@ -203,14 +203,14 @@ public class CorniSelWebDriver extends WebDriverDecorator implements TestOracle{
 	@Override
 	public WebElement findElementByLinkText(String arg0) {
 		WebElement we = super.findElementByLinkText(arg0);
-		CorniSelWebElement cswe = new CorniSelWebElement((RemoteWebElement)we,this);
+		CornipickleWebElement cswe = new CornipickleWebElement((RemoteWebElement)we,this);
 		return cswe;
 	}
 
 	@Override
 	public WebElement findElementByPartialLinkText(String arg0) {
 		WebElement we = super.findElementByPartialLinkText(arg0);
-		CorniSelWebElement cswe = new CorniSelWebElement((RemoteWebElement)we,this);
+		CornipickleWebElement cswe = new CornipickleWebElement((RemoteWebElement)we,this);
 		return cswe;
 	}
 
@@ -219,7 +219,7 @@ public class CorniSelWebDriver extends WebDriverDecorator implements TestOracle{
 		List<WebElement> welist = super.findElementsByLinkText(arg0);
 		List<WebElement> cswelist = new ArrayList<WebElement>();
 		for(WebElement element : welist) {
-			cswelist.add(new CorniSelWebElement((RemoteWebElement)element,this));
+			cswelist.add(new CornipickleWebElement((RemoteWebElement)element,this));
 		}
 		return cswelist;
 	}
@@ -229,7 +229,7 @@ public class CorniSelWebDriver extends WebDriverDecorator implements TestOracle{
 		List<WebElement> welist = super.findElementsByPartialLinkText(arg0);
 		List<WebElement> cswelist = new ArrayList<WebElement>();
 		for(WebElement element : welist) {
-			cswelist.add(new CorniSelWebElement((RemoteWebElement)element,this));
+			cswelist.add(new CornipickleWebElement((RemoteWebElement)element,this));
 		}
 		return cswelist;
 	}
@@ -237,7 +237,7 @@ public class CorniSelWebDriver extends WebDriverDecorator implements TestOracle{
 	@Override
 	public WebElement findElementById(String arg0) {
 		WebElement we = super.findElementById(arg0);
-		CorniSelWebElement cswe = new CorniSelWebElement((RemoteWebElement)we,this);
+		CornipickleWebElement cswe = new CornipickleWebElement((RemoteWebElement)we,this);
 		return cswe;
 	}
 
@@ -246,7 +246,7 @@ public class CorniSelWebDriver extends WebDriverDecorator implements TestOracle{
 		List<WebElement> welist = super.findElementsById(arg0);
 		List<WebElement> cswelist = new ArrayList<WebElement>();
 		for(WebElement element : welist) {
-			cswelist.add(new CorniSelWebElement((RemoteWebElement)element,this));
+			cswelist.add(new CornipickleWebElement((RemoteWebElement)element,this));
 		}
 		return cswelist;
 	}
@@ -254,7 +254,7 @@ public class CorniSelWebDriver extends WebDriverDecorator implements TestOracle{
 	@Override
 	public WebElement findElementByCssSelector(String arg0) {
 		WebElement we = super.findElementByCssSelector(arg0);
-		CorniSelWebElement cswe = new CorniSelWebElement((RemoteWebElement)we,this);
+		CornipickleWebElement cswe = new CornipickleWebElement((RemoteWebElement)we,this);
 		return cswe;
 	}
 
@@ -263,7 +263,7 @@ public class CorniSelWebDriver extends WebDriverDecorator implements TestOracle{
 		List<WebElement> welist = super.findElementsByCssSelector(arg0);
 		List<WebElement> cswelist = new ArrayList<WebElement>();
 		for(WebElement element : welist) {
-			cswelist.add(new CorniSelWebElement((RemoteWebElement)element,this));
+			cswelist.add(new CornipickleWebElement((RemoteWebElement)element,this));
 		}
 		return cswelist;
 	}
@@ -271,7 +271,7 @@ public class CorniSelWebDriver extends WebDriverDecorator implements TestOracle{
 	@Override
 	public WebElement findElementByClassName(String arg0) {
 		WebElement we = super.findElementByClassName(arg0);
-		CorniSelWebElement cswe = new CorniSelWebElement((RemoteWebElement)we,this);
+		CornipickleWebElement cswe = new CornipickleWebElement((RemoteWebElement)we,this);
 		return cswe;
 	}
 
@@ -280,7 +280,7 @@ public class CorniSelWebDriver extends WebDriverDecorator implements TestOracle{
 		List<WebElement> welist = super.findElementsByClassName(arg0);
 		List<WebElement> cswelist = new ArrayList<WebElement>();
 		for(WebElement element : welist) {
-			cswelist.add(new CorniSelWebElement((RemoteWebElement)element,this));
+			cswelist.add(new CornipickleWebElement((RemoteWebElement)element,this));
 		}
 		return cswelist;
 	}

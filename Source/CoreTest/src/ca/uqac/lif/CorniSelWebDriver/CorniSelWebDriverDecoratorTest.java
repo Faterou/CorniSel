@@ -15,19 +15,19 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
-import ca.uqac.lif.cornisel.CorniSelWebDriver;
+import ca.uqac.lif.cornisel.CornipickleDriver;
 import ca.uqac.lif.cornisel.StatementMetadata;
 import ca.uqac.lif.cornisel.Verdict;
 
 public class CorniSelWebDriverDecoratorTest {
 
 	private RemoteWebDriver m_driver;
-	private CorniSelWebDriver m_corniSelDriver;
+	private CornipickleDriver m_corniSelDriver;
 	
 	@Before
 	public void setUp() throws Exception {
 		m_driver = new ChromeDriver();
-		m_corniSelDriver = new CorniSelWebDriver(m_driver);
+		m_corniSelDriver = new CornipickleDriver(m_driver);
 	}
 	
 	@Test
