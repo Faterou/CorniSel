@@ -19,7 +19,9 @@
 package ca.uqac.lif.cornipickle.assertions;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -79,15 +81,29 @@ public class FindByTagName extends Enumerate
 			out_list.add(new PathValue(p, root, e));
 		}
 		List<WebElement> children = e.findElements(By.xpath("./*"));
+		Map<String,Integer> tag_count = new HashMap<String,Integer>();
 		for (int i = 0; i < children.size(); i++)
 		{
 			WebElement child = children.get(i);
 			if (child instanceof WebElement)
 			{
-				Path new_p = p.append(child.getTagName(), i);
+				int index = getTagCount(child.getTagName(), tag_count);
+				Path new_p = p.append(child.getTagName(), index);
 				find(tag, root, (WebElement) child, new_p, out_list);
 			}
 		}
+	}
+	
+	protected static int getTagCount(String name, Map<String,Integer> tag_count)
+	{
+		if (!tag_count.containsKey(name))
+		{
+			tag_count.put(name, 0);
+			return 0;
+		}
+		int index = tag_count.get(name) + 1;
+		tag_count.put(name, index);
+		return index;
 	}
 
 	protected static class PathValue implements Value
