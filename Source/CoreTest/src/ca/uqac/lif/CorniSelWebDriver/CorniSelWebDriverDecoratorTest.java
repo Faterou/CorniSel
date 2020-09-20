@@ -7,7 +7,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.Map.Entry;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -17,7 +16,6 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 
 import ca.uqac.lif.cornipickle.assertions.TestResult;
 import ca.uqac.lif.cornipickle.driver.CornipickleDriver;
-import ca.uqac.lif.cornipickle.driver.StatementMetadata;
 
 public class CorniSelWebDriverDecoratorTest {
 
