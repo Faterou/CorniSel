@@ -22,10 +22,14 @@ import static ca.uqac.lif.cornipickle.assertions.AssertionExplainer.explainAndDr
 
 public class SimpleTest 
 {
+	static
+	{
+		//System.setProperty("webdriver.gecko.driver", "/home/sylvain/Desktop/geckodriver");
+	}
+	
 	@Test
 	public void test1()
 	{
-		//System.setProperty("webdriver.gecko.driver", "/home/sylvain/Desktop/geckodriver");
 		CornipickleDriver driver = new CornipickleDriver(new JBrowserDriver())
 				.check("Items have width 100", 
 						ForAll("$x", Find.ByTagName("li"), IsGreaterOrEqual(Dimension.Width("$x"), 100)));

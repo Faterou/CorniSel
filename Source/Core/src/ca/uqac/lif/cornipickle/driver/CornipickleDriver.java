@@ -1,3 +1,21 @@
+/*
+    Cornipickle, validation of layout bugs in web applications
+    Copyright (C) 2015-2020 Laboratoire d'informatique formelle
+    Université du Québec à Chicoutimi, Canada
+    
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Lesser General Public License as published
+    by the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+    
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+    
+    You should have received a copy of the GNU Lesser General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package ca.uqac.lif.cornipickle.driver;
 
 import java.io.BufferedReader;
@@ -17,9 +35,17 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.remote.RemoteWebElement;
 
 import ca.uqac.lif.cornipickle.assertions.Function;
+import ca.uqac.lif.cornipickle.assertions.Path;
 import ca.uqac.lif.cornipickle.assertions.TestCondition;
 import ca.uqac.lif.cornipickle.assertions.TestResult;
+import ca.uqac.lif.cornipickle.assertions.Verdict;
+import ca.uqac.lif.petitpoucet.DesignatedObject;
 
+/**
+ * 
+ * @author Francis Guérin, Sylvain Hallé
+ *
+ */
 public class CornipickleDriver extends WebDriverDecorator implements TestOracle{
 
 	private Interpreter m_interpreter;
@@ -307,10 +333,38 @@ public class CornipickleDriver extends WebDriverDecorator implements TestOracle{
 		return null;
 	}
 	
-	private void highlightElements()
+	public CornipickleDriver highlightElements()
 	{
-		TestResult verdict = m_interpreter.getVerdict();
-		List<List<List<Number>>> highlight_ids = new LinkedList<List<List<Number>>>();
-		super.m_webDriver.executeScript(m_highlightScript, highlight_ids);
+		TestResult result = m_interpreter.getVerdict();
+		for (Verdict v : result.getVerdicts())
+		{
+			if (v.getResult())
+			{
+				continue;
+			}
+			List<Object> witnesses = v.getWitness();
+			for (Object o : witnesses)
+			{
+				if (o instanceof DesignatedObject)
+				{
+					Path p = getPath((DesignatedObject) o);
+					if (p != null)
+					{
+						highlightElement(p);
+					}
+				}
+			}
+		}
+		return this;
+	}
+	
+	protected static Path getPath(DesignatedObject dob)
+	{
+		return null;
+	}
+	
+	protected void highlightElement(Path p)
+	{
+		
 	}
 }
