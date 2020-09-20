@@ -46,293 +46,345 @@ import ca.uqac.lif.petitpoucet.DesignatedObject;
  * @author Francis Guérin, Sylvain Hallé
  *
  */
-public class CornipickleDriver extends WebDriverDecorator implements TestOracle{
+public class CornipickleDriver extends WebDriverDecorator implements TestOracle
+{
 
 	private Interpreter m_interpreter;
-	
+
 	private String m_highlightScript;
-	
+
 	private List<EvaluationListener> m_listeners;
-	
-	public static enum UpdateMode {MANUAL, AUTOMATIC};
-	
+
+	public static enum UpdateMode
+	{
+		MANUAL, AUTOMATIC
+	};
+
 	public UpdateMode m_updateMode = UpdateMode.AUTOMATIC;
-	
+
 	protected boolean m_evaluatedOnce = false;
-	
-	public CornipickleDriver(RemoteWebDriver driver) {
+
+	public CornipickleDriver(RemoteWebDriver driver)
+	{
 		super(driver);
 		m_interpreter = new Interpreter();
 		m_highlightScript = "";
 		m_listeners = new ArrayList<EvaluationListener>();
 	}
-	
+
 	@Override
-	public CornipickleDriver check(String name, Function property) {
+	public CornipickleDriver check(String name, Function property)
+	{
 		m_interpreter.check(new TestCondition(name, property));
 		return this;
 	}
-	
+
 	@Override
-	public CornipickleDriver check(Function property) {
+	public CornipickleDriver check(Function property)
+	{
 		m_interpreter.check(property);
 		return this;
 	}
-	
-	public CornipickleDriver check() {
+
+	public CornipickleDriver check()
+	{
 		evaluateAll(null);
 		return this;
 	}
 
 	@Override
-	public void evaluateAll(WebElement event) {
+	public void evaluateAll(WebElement event)
+	{
 		WebElement root = m_webDriver.findElement(By.tagName("body"));
 		m_interpreter.evaluateAll(root);
-		
+
 		highlightElements();
-		
-		for(EvaluationListener listener : m_listeners) {
+
+		for (EvaluationListener listener : m_listeners)
+		{
 			listener.evaluationEvent(this, m_interpreter);
 		}
 	}
-	
+
 	@Override
-	public void resetHistory(){
+	public void resetHistory()
+	{
 		m_evaluatedOnce = false;
 		m_interpreter.resetHistory();
 	}
-	
+
 	@Override
-	public void clear(){
+	public void clear()
+	{
 		m_evaluatedOnce = false;
 		m_interpreter.clear();
 	}
-	
-	public void outputEvaluation(String filename) throws IOException{
+
+	public void outputEvaluation(String filename) throws IOException
+	{
 		TestResult verdict = m_interpreter.getVerdict();
 		String currentURL = super.m_webDriver.getCurrentUrl();
 		String width = String.valueOf(super.m_webDriver.manage().window().getSize().getWidth());
 		String height = String.valueOf(super.m_webDriver.manage().window().getSize().getHeight());
-		
+
 		FileWriter fw = new FileWriter(new File(filename), true);
-		
+
 		fw.write("-----------------------------------------------\n");
 		fw.write("Evaluation\n");
 		fw.write("URL: " + currentURL + "\n");
 		fw.write("Width: " + width + " px\n");
 		fw.write("Height: " + height + " px\n");
 		fw.write("Overall result: ");
-		
+
 		Boolean overallVerdict = verdict.getResult();
 		fw.write(overallVerdict.toString() + "\n\n");
-		fw.write(verdict.toString());		
+		fw.write(verdict.toString());
 		fw.write("\n");
 		fw.close();
 	}
-	
+
 	@Override
-	public TestResult getResult() {
+	public TestResult getResult()
+	{
 		if (!m_evaluatedOnce)
 		{
 			check();
 		}
 		return m_interpreter.getVerdict();
 	}
-	
+
 	@Override
-	public UpdateMode getUpdateMode() {
+	public UpdateMode getUpdateMode()
+	{
 		return m_updateMode;
 	}
-	
-	public void setAutomaticMode() {
+
+	public void setAutomaticMode()
+	{
 		m_updateMode = UpdateMode.AUTOMATIC;
 	}
-	
-	public void setManualMode() {
+
+	public void setManualMode()
+	{
 		m_updateMode = UpdateMode.MANUAL;
 	}
-	
+
 	/*
 	 * Add a listener that will throw an event every time an evaluation has finished
 	 */
-	public void addListener(EvaluationListener listener) {
+	public void addListener(EvaluationListener listener)
+	{
 		m_listeners.add(listener);
 	}
-	
+
 	@Override
-	public WebElement findElement(By by) {
+	public WebElement findElement(By by)
+	{
 		WebElement we = super.findElement(by);
-		CornipickleWebElement cswe = new CornipickleWebElement((RemoteWebElement)we,this);
+		CornipickleWebElement cswe = new CornipickleWebElement((RemoteWebElement) we, this);
 		return cswe;
 	}
-	
+
 	@Override
-	public List<WebElement> findElements(By by) {
+	public List<WebElement> findElements(By by)
+	{
 		List<WebElement> welist = super.findElements(by);
 		List<WebElement> cswelist = new ArrayList<WebElement>();
-		for(WebElement element : welist) {
-			cswelist.add(new CornipickleWebElement((RemoteWebElement)element,this));
+		for (WebElement element : welist)
+		{
+			cswelist.add(new CornipickleWebElement((RemoteWebElement) element, this));
 		}
 		return cswelist;
 	}
-	
+
 	@Override
-	public WebElement findElementByXPath(String arg0) {
+	public WebElement findElementByXPath(String arg0)
+	{
 		WebElement we = super.findElementByXPath(arg0);
-		CornipickleWebElement cswe = new CornipickleWebElement((RemoteWebElement)we,this);
+		CornipickleWebElement cswe = new CornipickleWebElement((RemoteWebElement) we, this);
 		return cswe;
 	}
 
 	@Override
-	public List<WebElement> findElementsByXPath(String arg0) {
+	public List<WebElement> findElementsByXPath(String arg0)
+	{
 		List<WebElement> welist = super.findElementsByXPath(arg0);
 		List<WebElement> cswelist = new ArrayList<WebElement>();
-		for(WebElement element : welist) {
-			cswelist.add(new CornipickleWebElement((RemoteWebElement)element,this));
+		for (WebElement element : welist)
+		{
+			cswelist.add(new CornipickleWebElement((RemoteWebElement) element, this));
 		}
 		return cswelist;
 	}
 
 	@Override
-	public WebElement findElementByTagName(String arg0) {
+	public WebElement findElementByTagName(String arg0)
+	{
 		WebElement we = super.findElementByTagName(arg0);
-		CornipickleWebElement cswe = new CornipickleWebElement((RemoteWebElement)we,this);
+		CornipickleWebElement cswe = new CornipickleWebElement((RemoteWebElement) we, this);
 		return cswe;
 	}
 
 	@Override
-	public List<WebElement> findElementsByTagName(String arg0) {
+	public List<WebElement> findElementsByTagName(String arg0)
+	{
 		List<WebElement> welist = super.findElementsByTagName(arg0);
 		List<WebElement> cswelist = new ArrayList<WebElement>();
-		for(WebElement element : welist) {
-			cswelist.add(new CornipickleWebElement((RemoteWebElement)element,this));
+		for (WebElement element : welist)
+		{
+			cswelist.add(new CornipickleWebElement((RemoteWebElement) element, this));
 		}
 		return cswelist;
 	}
 
 	@Override
-	public WebElement findElementByName(String arg0) {
+	public WebElement findElementByName(String arg0)
+	{
 		WebElement we = super.findElementByName(arg0);
-		CornipickleWebElement cswe = new CornipickleWebElement((RemoteWebElement)we,this);
+		CornipickleWebElement cswe = new CornipickleWebElement((RemoteWebElement) we, this);
 		return cswe;
 	}
 
 	@Override
-	public List<WebElement> findElementsByName(String arg0) {
+	public List<WebElement> findElementsByName(String arg0)
+	{
 		List<WebElement> welist = super.findElementsByName(arg0);
 		List<WebElement> cswelist = new ArrayList<WebElement>();
-		for(WebElement element : welist) {
-			cswelist.add(new CornipickleWebElement((RemoteWebElement)element,this));
+		for (WebElement element : welist)
+		{
+			cswelist.add(new CornipickleWebElement((RemoteWebElement) element, this));
 		}
 		return cswelist;
 	}
 
 	@Override
-	public WebElement findElementByLinkText(String arg0) {
+	public WebElement findElementByLinkText(String arg0)
+	{
 		WebElement we = super.findElementByLinkText(arg0);
-		CornipickleWebElement cswe = new CornipickleWebElement((RemoteWebElement)we,this);
+		CornipickleWebElement cswe = new CornipickleWebElement((RemoteWebElement) we, this);
 		return cswe;
 	}
 
 	@Override
-	public WebElement findElementByPartialLinkText(String arg0) {
+	public WebElement findElementByPartialLinkText(String arg0)
+	{
 		WebElement we = super.findElementByPartialLinkText(arg0);
-		CornipickleWebElement cswe = new CornipickleWebElement((RemoteWebElement)we,this);
+		CornipickleWebElement cswe = new CornipickleWebElement((RemoteWebElement) we, this);
 		return cswe;
 	}
 
 	@Override
-	public List<WebElement> findElementsByLinkText(String arg0) {
+	public List<WebElement> findElementsByLinkText(String arg0)
+	{
 		List<WebElement> welist = super.findElementsByLinkText(arg0);
 		List<WebElement> cswelist = new ArrayList<WebElement>();
-		for(WebElement element : welist) {
-			cswelist.add(new CornipickleWebElement((RemoteWebElement)element,this));
+		for (WebElement element : welist)
+		{
+			cswelist.add(new CornipickleWebElement((RemoteWebElement) element, this));
 		}
 		return cswelist;
 	}
 
 	@Override
-	public List<WebElement> findElementsByPartialLinkText(String arg0) {
+	public List<WebElement> findElementsByPartialLinkText(String arg0)
+	{
 		List<WebElement> welist = super.findElementsByPartialLinkText(arg0);
 		List<WebElement> cswelist = new ArrayList<WebElement>();
-		for(WebElement element : welist) {
-			cswelist.add(new CornipickleWebElement((RemoteWebElement)element,this));
+		for (WebElement element : welist)
+		{
+			cswelist.add(new CornipickleWebElement((RemoteWebElement) element, this));
 		}
 		return cswelist;
 	}
 
 	@Override
-	public WebElement findElementById(String arg0) {
+	public WebElement findElementById(String arg0)
+	{
 		WebElement we = super.findElementById(arg0);
-		CornipickleWebElement cswe = new CornipickleWebElement((RemoteWebElement)we,this);
+		CornipickleWebElement cswe = new CornipickleWebElement((RemoteWebElement) we, this);
 		return cswe;
 	}
 
 	@Override
-	public List<WebElement> findElementsById(String arg0) {
+	public List<WebElement> findElementsById(String arg0)
+	{
 		List<WebElement> welist = super.findElementsById(arg0);
 		List<WebElement> cswelist = new ArrayList<WebElement>();
-		for(WebElement element : welist) {
-			cswelist.add(new CornipickleWebElement((RemoteWebElement)element,this));
+		for (WebElement element : welist)
+		{
+			cswelist.add(new CornipickleWebElement((RemoteWebElement) element, this));
 		}
 		return cswelist;
 	}
 
 	@Override
-	public WebElement findElementByCssSelector(String arg0) {
+	public WebElement findElementByCssSelector(String arg0)
+	{
 		WebElement we = super.findElementByCssSelector(arg0);
-		CornipickleWebElement cswe = new CornipickleWebElement((RemoteWebElement)we,this);
+		CornipickleWebElement cswe = new CornipickleWebElement((RemoteWebElement) we, this);
 		return cswe;
 	}
 
 	@Override
-	public List<WebElement> findElementsByCssSelector(String arg0) {
+	public List<WebElement> findElementsByCssSelector(String arg0)
+	{
 		List<WebElement> welist = super.findElementsByCssSelector(arg0);
 		List<WebElement> cswelist = new ArrayList<WebElement>();
-		for(WebElement element : welist) {
-			cswelist.add(new CornipickleWebElement((RemoteWebElement)element,this));
+		for (WebElement element : welist)
+		{
+			cswelist.add(new CornipickleWebElement((RemoteWebElement) element, this));
 		}
 		return cswelist;
 	}
 
 	@Override
-	public WebElement findElementByClassName(String arg0) {
+	public WebElement findElementByClassName(String arg0)
+	{
 		WebElement we = super.findElementByClassName(arg0);
-		CornipickleWebElement cswe = new CornipickleWebElement((RemoteWebElement)we,this);
+		CornipickleWebElement cswe = new CornipickleWebElement((RemoteWebElement) we, this);
 		return cswe;
 	}
 
 	@Override
-	public List<WebElement> findElementsByClassName(String arg0) {
+	public List<WebElement> findElementsByClassName(String arg0)
+	{
 		List<WebElement> welist = super.findElementsByClassName(arg0);
 		List<WebElement> cswelist = new ArrayList<WebElement>();
-		for(WebElement element : welist) {
-			cswelist.add(new CornipickleWebElement((RemoteWebElement)element,this));
+		for (WebElement element : welist)
+		{
+			cswelist.add(new CornipickleWebElement((RemoteWebElement) element, this));
 		}
 		return cswelist;
 	}
-	
-	private String readJS(String path) {
+
+	private String readJS(String path)
+	{
 		InputStream is;
-		try {
+		try
+		{
 			is = getClass().getResourceAsStream(path);
 			BufferedReader bf = new BufferedReader(new InputStreamReader(is));
 			String inputLine;
 			String script = "";
-	        while ((inputLine = bf.readLine()) != null) {
-	        	script = script + inputLine + "\n";
-	        }
-	        
-	        return script;
-		} catch (FileNotFoundException e) {
+			while ((inputLine = bf.readLine()) != null)
+			{
+				script = script + inputLine + "\n";
+			}
+
+			return script;
+		}
+		catch (FileNotFoundException e)
+		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (IOException e) {
+		}
+		catch (IOException e)
+		{
 			e.printStackTrace();
 		}
 		return null;
 	}
-	
+
 	public CornipickleDriver highlightElements()
 	{
 		TestResult result = m_interpreter.getVerdict();
@@ -357,14 +409,14 @@ public class CornipickleDriver extends WebDriverDecorator implements TestOracle{
 		}
 		return this;
 	}
-	
+
 	protected static Path getPath(DesignatedObject dob)
 	{
 		return null;
 	}
-	
+
 	protected void highlightElement(Path p)
 	{
-		
+
 	}
 }

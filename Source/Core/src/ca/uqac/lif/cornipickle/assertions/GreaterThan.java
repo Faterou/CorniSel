@@ -38,7 +38,7 @@ public class GreaterThan extends AtomicFunction
 		Number n2 = (Number) o2;
 		return n1.floatValue() > n2.floatValue();
 	}
-	
+
 	@Override
 	public String toString()
 	{

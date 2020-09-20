@@ -26,14 +26,14 @@ public class BooleanAnd extends BooleanConnective
 	{
 		super(arity);
 	}
-	
+
 	public BooleanAnd()
 	{
 		super(2);
 	}
-	
+
 	@Override
-	protected Value getBooleanValue(List<Value> false_values, List<Value> true_values) 
+	protected Value getBooleanValue(List<Value> false_values, List<Value> true_values)
 	{
 		if (false_values.isEmpty())
 		{
@@ -43,11 +43,11 @@ public class BooleanAnd extends BooleanConnective
 	}
 
 	@Override
-	protected Object get(Object... arguments) 
+	protected Object get(Object... arguments)
 	{
 		return null;
 	}
-	
+
 	@Override
 	public String toString()
 	{

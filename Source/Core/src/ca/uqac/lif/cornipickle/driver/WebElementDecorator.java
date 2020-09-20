@@ -47,192 +47,230 @@ import org.openqa.selenium.remote.RemoteWebElement;
  * @author Francis Guérin
  *
  */
-public class WebElementDecorator implements WebElement, FindsByClassName, FindsByCssSelector, FindsById,
-	FindsByLinkText, FindsByName, FindsByTagName, FindsByXPath, HasIdentity, WrapsDriver, 
-	SearchContext, TakesScreenshot{
+public class WebElementDecorator implements WebElement, FindsByClassName, FindsByCssSelector,
+		FindsById, FindsByLinkText, FindsByName, FindsByTagName, FindsByXPath, HasIdentity, WrapsDriver,
+		SearchContext, TakesScreenshot
+{
 
 	private RemoteWebElement m_webElement;
-	
-	public WebElementDecorator(RemoteWebElement webElement) {
+
+	public WebElementDecorator(RemoteWebElement webElement)
+	{
 		m_webElement = webElement;
 	}
-	
+
 	@Override
-	public <X> X getScreenshotAs(OutputType<X> target) throws WebDriverException {
+	public <X> X getScreenshotAs(OutputType<X> target) throws WebDriverException
+	{
 		return m_webElement.getScreenshotAs(target);
 	}
 
 	@Override
-	public void clear() {
+	public void clear()
+	{
 		m_webElement.clear();
 	}
 
 	@Override
-	public void click() {
+	public void click()
+	{
 		m_webElement.click();
 	}
 
 	@Override
-	public WebElement findElement(By by) {
+	public WebElement findElement(By by)
+	{
 		return m_webElement.findElement(by);
 	}
 
 	@Override
-	public List<WebElement> findElements(By by) {
+	public List<WebElement> findElements(By by)
+	{
 		return m_webElement.findElements(by);
 	}
 
 	@Override
-	public String getAttribute(String name) {
+	public String getAttribute(String name)
+	{
 		return m_webElement.getAttribute(name);
 	}
 
 	@Override
-	public String getCssValue(String propertyName) {
+	public String getCssValue(String propertyName)
+	{
 		return m_webElement.getCssValue(propertyName);
 	}
 
 	@Override
-	public Point getLocation() {
+	public Point getLocation()
+	{
 		return m_webElement.getLocation();
 	}
 
 	@Override
-	public Rectangle getRect() {
+	public Rectangle getRect()
+	{
 		return m_webElement.getRect();
 	}
 
 	@Override
-	public Dimension getSize() {
+	public Dimension getSize()
+	{
 		return m_webElement.getSize();
 	}
 
 	@Override
-	public String getTagName() {
+	public String getTagName()
+	{
 		return m_webElement.getTagName();
 	}
 
 	@Override
-	public String getText() {
+	public String getText()
+	{
 		return m_webElement.getText();
 	}
 
 	@Override
-	public boolean isDisplayed() {
+	public boolean isDisplayed()
+	{
 		return m_webElement.isDisplayed();
 	}
 
 	@Override
-	public boolean isEnabled() {
+	public boolean isEnabled()
+	{
 		return m_webElement.isEnabled();
 	}
 
 	@Override
-	public boolean isSelected() {
+	public boolean isSelected()
+	{
 		return m_webElement.isSelected();
 	}
 
 	@Override
-	public void sendKeys(CharSequence... keysToSend) {
+	public void sendKeys(CharSequence... keysToSend)
+	{
 		m_webElement.sendKeys(keysToSend);
 	}
 
 	@Override
-	public void submit() {
+	public void submit()
+	{
 		m_webElement.submit();
 	}
-	
-	protected WebElement getWebElement() {
+
+	protected WebElement getWebElement()
+	{
 		return m_webElement;
 	}
 
 	@Override
-	public WebDriver getWrappedDriver() {
+	public WebDriver getWrappedDriver()
+	{
 		return m_webElement.getWrappedDriver();
 	}
 
 	@Override
-	public String getId() {
+	public String getId()
+	{
 		return m_webElement.getId();
 	}
 
 	@Override
-	public WebElement findElementByXPath(String arg0) {
+	public WebElement findElementByXPath(String arg0)
+	{
 		return m_webElement.findElementByXPath(arg0);
 	}
 
 	@Override
-	public List<WebElement> findElementsByXPath(String arg0) {
+	public List<WebElement> findElementsByXPath(String arg0)
+	{
 		return m_webElement.findElementsByXPath(arg0);
 	}
 
 	@Override
-	public WebElement findElementByTagName(String arg0) {
+	public WebElement findElementByTagName(String arg0)
+	{
 		return m_webElement.findElementByTagName(arg0);
 	}
 
 	@Override
-	public List<WebElement> findElementsByTagName(String arg0) {
+	public List<WebElement> findElementsByTagName(String arg0)
+	{
 		return m_webElement.findElementsByTagName(arg0);
 	}
 
 	@Override
-	public WebElement findElementByName(String arg0) {
+	public WebElement findElementByName(String arg0)
+	{
 		return m_webElement.findElementByName(arg0);
 	}
 
 	@Override
-	public List<WebElement> findElementsByName(String arg0) {
+	public List<WebElement> findElementsByName(String arg0)
+	{
 		return m_webElement.findElementsByName(arg0);
 	}
 
 	@Override
-	public WebElement findElementByLinkText(String arg0) {
+	public WebElement findElementByLinkText(String arg0)
+	{
 		return m_webElement.findElementByLinkText(arg0);
 	}
 
 	@Override
-	public WebElement findElementByPartialLinkText(String arg0) {
+	public WebElement findElementByPartialLinkText(String arg0)
+	{
 		return m_webElement.findElementByPartialLinkText(arg0);
 	}
 
 	@Override
-	public List<WebElement> findElementsByLinkText(String arg0) {
+	public List<WebElement> findElementsByLinkText(String arg0)
+	{
 		return m_webElement.findElementsByLinkText(arg0);
 	}
 
 	@Override
-	public List<WebElement> findElementsByPartialLinkText(String arg0) {
+	public List<WebElement> findElementsByPartialLinkText(String arg0)
+	{
 		return m_webElement.findElementsByPartialLinkText(arg0);
 	}
 
 	@Override
-	public WebElement findElementById(String arg0) {
+	public WebElement findElementById(String arg0)
+	{
 		return m_webElement.findElementById(arg0);
 	}
 
 	@Override
-	public List<WebElement> findElementsById(String arg0) {
+	public List<WebElement> findElementsById(String arg0)
+	{
 		return m_webElement.findElementsById(arg0);
 	}
 
 	@Override
-	public WebElement findElementByCssSelector(String arg0) {
+	public WebElement findElementByCssSelector(String arg0)
+	{
 		return m_webElement.findElementByCssSelector(arg0);
 	}
 
 	@Override
-	public List<WebElement> findElementsByCssSelector(String arg0) {
+	public List<WebElement> findElementsByCssSelector(String arg0)
+	{
 		return m_webElement.findElementsByCssSelector(arg0);
 	}
 
 	@Override
-	public WebElement findElementByClassName(String arg0) {
+	public WebElement findElementByClassName(String arg0)
+	{
 		return m_webElement.findElementByClassName(arg0);
 	}
 
 	@Override
-	public List<WebElement> findElementsByClassName(String arg0) {
+	public List<WebElement> findElementsByClassName(String arg0)
+	{
 		return m_webElement.findElementsByClassName(arg0);
 	}
 }

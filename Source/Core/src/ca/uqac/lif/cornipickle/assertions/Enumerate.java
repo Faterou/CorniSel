@@ -35,9 +35,9 @@ public class Enumerate extends AtomicFunction
 	{
 		super(1);
 	}
-	
+
 	@Override
-	protected Value compute(Value... values) 
+	protected Value compute(Value... values)
 	{
 		if (!(values[0].get() instanceof List))
 		{
@@ -58,17 +58,17 @@ public class Enumerate extends AtomicFunction
 	}
 
 	@Override
-	protected Object get(Object... arguments) 
+	protected Object get(Object... arguments)
 	{
 		return null;
 	}
-	
+
 	public static class EnumeratedValue implements Value
 	{
 		protected int m_index;
-		
+
 		protected List<Value> m_inputList;
-		
+
 		public EnumeratedValue(int index, List<Value> input_list)
 		{
 			super();
@@ -77,7 +77,8 @@ public class Enumerate extends AtomicFunction
 		}
 
 		@Override
-		public List<TraceabilityNode> query(TraceabilityQuery q, Designator d, TraceabilityNode root, Tracer factory) 
+		public List<TraceabilityNode> query(TraceabilityQuery q, Designator d, TraceabilityNode root,
+				Tracer factory)
 		{
 			List<TraceabilityNode> leaves = new ArrayList<TraceabilityNode>();
 			Designator new_d = new ComposedDesignator(d.tail(), new NthItem(m_index));
@@ -90,49 +91,48 @@ public class Enumerate extends AtomicFunction
 		}
 
 		@Override
-		public Object get() 
+		public Object get()
 		{
 			return m_inputList.get(m_index).get();
 		}
-		
+
 		@Override
-		public String toString() 
+		public String toString()
 		{
 			return m_inputList.get(m_index).get().toString();
 		}
 	}
-	
+
 	public static class NthItem extends NthOf
 	{
 		public NthItem(int index)
 		{
 			super(index);
 		}
-		
+
 		@Override
-		public boolean appliesTo(Object o) 
+		public boolean appliesTo(Object o)
 		{
 			return o instanceof List;
 		}
 
 		@Override
-		public Designator peek() 
+		public Designator peek()
 		{
 			return this;
 		}
 
 		@Override
-		public Designator tail() 
+		public Designator tail()
 		{
 			return null;
 		}
-		
+
 		@Override
 		public String toString()
 		{
 			return "Element #" + (m_index + 1);
 		}
 	}
-	
-	
+
 }

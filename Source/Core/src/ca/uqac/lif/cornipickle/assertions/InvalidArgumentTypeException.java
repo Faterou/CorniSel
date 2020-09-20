@@ -25,7 +25,7 @@ public class InvalidArgumentTypeException extends FunctionException
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public InvalidArgumentTypeException(Function e) 
+	public InvalidArgumentTypeException(Function e)
 	{
 		super(e, "Invalid argument type");
 	}

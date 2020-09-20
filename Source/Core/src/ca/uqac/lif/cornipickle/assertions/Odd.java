@@ -24,9 +24,9 @@ public class Odd extends AtomicFunction
 	{
 		super(1);
 	}
-	
+
 	@Override
-	protected Object get(Object ... arguments) 
+	protected Object get(Object... arguments)
 	{
 		Object o = arguments[0];
 		if (!(o instanceof Number))
@@ -40,7 +40,7 @@ public class Odd extends AtomicFunction
 		}
 		return true;
 	}
-	
+
 	@Override
 	public String toString()
 	{

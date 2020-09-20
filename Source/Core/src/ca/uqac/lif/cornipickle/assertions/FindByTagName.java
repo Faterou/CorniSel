@@ -34,13 +34,13 @@ import ca.uqac.lif.petitpoucet.LabeledEdge.Quality;
 public class FindByTagName extends Enumerate
 {
 	protected String m_tagName;
-	
+
 	public FindByTagName(String tag_name)
 	{
 		super();
 		m_tagName = tag_name;
 	}
-	
+
 	@Override
 	public Value evaluate(Object... arguments)
 	{
@@ -63,15 +63,16 @@ public class FindByTagName extends Enumerate
 		}
 		return new AtomicFunctionReturnValue(out_list, v);
 	}
-	
+
 	@Override
 	protected Value compute(Value... values)
 	{
 		// Not needed
 		return null;
 	}
-	
-	protected static void find(String tag, WebElement root, WebElement e, Path p, List<Value> out_list)
+
+	protected static void find(String tag, WebElement root, WebElement e, Path p,
+			List<Value> out_list)
 	{
 		if (e.getTagName().compareTo(tag) == 0)
 		{
@@ -88,25 +89,26 @@ public class FindByTagName extends Enumerate
 			}
 		}
 	}
-	
+
 	protected static class PathValue implements Value
 	{
 		protected Path m_path;
-		
+
 		protected Value m_value;
-		
+
 		protected Value m_root;
-		
+
 		public PathValue(Path p, Object root, Object value)
 		{
 			super();
 			m_value = Value.lift(value);
 			m_root = Value.lift(root);
 			m_path = p;
-		}		
-		
+		}
+
 		@Override
-		public List<TraceabilityNode> query(TraceabilityQuery q, Designator d, TraceabilityNode root, Tracer factory) 
+		public List<TraceabilityNode> query(TraceabilityQuery q, Designator d, TraceabilityNode root,
+				Tracer factory)
 		{
 			List<TraceabilityNode> leaves = new ArrayList<TraceabilityNode>();
 			Designator new_d = new ComposedDesignator(d.tail(), m_path);
@@ -117,11 +119,11 @@ public class FindByTagName extends Enumerate
 		}
 
 		@Override
-		public Object get() 
+		public Object get()
 		{
 			return m_value.get();
 		}
-		
+
 		@Override
 		public String toString()
 		{

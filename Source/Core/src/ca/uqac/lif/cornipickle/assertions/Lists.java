@@ -24,7 +24,7 @@ public class Lists
 	{
 		return new Enumerate();
 	}
-	
+
 	public static final Function Enumerate(Object op)
 	{
 		return new ComposedFunction(new Enumerate(), op);

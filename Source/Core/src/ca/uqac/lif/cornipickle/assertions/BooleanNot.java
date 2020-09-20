@@ -24,9 +24,9 @@ public class BooleanNot extends AtomicFunction
 	{
 		super(1);
 	}
-	
+
 	@Override
-	protected Object get(Object... arguments) 
+	protected Object get(Object... arguments)
 	{
 		if (!(arguments[0] instanceof Boolean))
 		{
@@ -34,7 +34,7 @@ public class BooleanNot extends AtomicFunction
 		}
 		return !((Boolean) arguments[0]);
 	}
-	
+
 	@Override
 	public String toString()
 	{

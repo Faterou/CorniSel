@@ -23,6 +23,7 @@ package ca.uqac.lif.cornipickle.driver;
  * @author Francis Guérin
  *
  */
-public interface EvaluationListener {
+public interface EvaluationListener
+{
 	void evaluationEvent(CornipickleDriver driver, Interpreter interpreter);
 }

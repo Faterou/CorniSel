@@ -21,19 +21,19 @@ package ca.uqac.lif.cornipickle.assertions;
 import java.util.List;
 
 public class BooleanOr extends BooleanConnective
-{	
+{
 	public BooleanOr(int arity)
 	{
 		super(arity);
 	}
-	
+
 	public BooleanOr()
 	{
 		super(2);
 	}
-	
+
 	@Override
-	protected Value getBooleanValue(List<Value> false_values, List<Value> true_values) 
+	protected Value getBooleanValue(List<Value> false_values, List<Value> true_values)
 	{
 		if (true_values.isEmpty())
 		{
@@ -43,11 +43,11 @@ public class BooleanOr extends BooleanConnective
 	}
 
 	@Override
-	protected Object get(Object... arguments) 
+	protected Object get(Object... arguments)
 	{
 		return null;
 	}
-	
+
 	@Override
 	public String toString()
 	{

@@ -30,13 +30,13 @@ import ca.uqac.lif.petitpoucet.LabeledEdge.Quality;
 public abstract class Quantifier implements Function
 {
 	protected int m_index;
-	
+
 	protected String m_variable;
-	
+
 	protected Function m_domain;
-	
+
 	protected Function m_phi;
-	
+
 	public Quantifier(int index, Function domain, Function phi)
 	{
 		super();
@@ -44,7 +44,7 @@ public abstract class Quantifier implements Function
 		m_domain = domain;
 		m_phi = phi;
 	}
-	
+
 	public Quantifier(String variable, Function domain, Function phi)
 	{
 		super();
@@ -52,7 +52,7 @@ public abstract class Quantifier implements Function
 		m_domain = domain;
 		m_phi = phi;
 	}
-	
+
 	@Override
 	public int getArity()
 	{
@@ -78,7 +78,7 @@ public abstract class Quantifier implements Function
 		for (int i = 0; i < domain.size(); i++)
 		{
 			Value x = Value.lift(domain.get(i));
-			Function cf = m_phi.set(m_variable, x);//new CurriedFunction(m_phi, m_index, x);
+			Function cf = m_phi.set(m_variable, x);// new CurriedFunction(m_phi, m_index, x);
 			Value ret_val = cf.evaluate(arguments);
 			Object o_b = ret_val.get();
 			if (!(o_b instanceof Boolean))
@@ -97,15 +97,16 @@ public abstract class Quantifier implements Function
 		}
 		return getQuantifierValue(false_verdicts, true_verdicts);
 	}
-	
-	protected abstract Value getQuantifierValue(List<VerdictValue> false_verdicts, List<VerdictValue> true_verdicts);
-	
+
+	protected abstract Value getQuantifierValue(List<VerdictValue> false_verdicts,
+			List<VerdictValue> true_verdicts);
+
 	protected static class VerdictValue
 	{
 		public Value verdict;
-		
+
 		public Value value;
-		
+
 		public VerdictValue(Value value, Value verdict)
 		{
 			super();
@@ -113,42 +114,43 @@ public abstract class Quantifier implements Function
 			this.verdict = verdict;
 		}
 	}
-	
+
 	protected static abstract class QuantifierVerdict implements Value
 	{
 		protected List<VerdictValue> m_verdicts;
-		
+
 		protected boolean m_value;
-		
+
 		protected QuantifierVerdict(boolean value, List<VerdictValue> verdicts)
 		{
 			super();
 			m_value = value;
 			m_verdicts = verdicts;
 		}
-		
+
 		@Override
 		public Boolean get()
 		{
 			return m_value;
 		}
-		
+
 		@Override
 		public String toString()
 		{
 			return Boolean.toString(m_value);
 		}
 	}
-	
+
 	protected class QuantifierDisjunctiveVerdict extends QuantifierVerdict
 	{
 		public QuantifierDisjunctiveVerdict(boolean value, List<VerdictValue> verdicts)
 		{
 			super(value, verdicts);
 		}
-		
+
 		@Override
-		public List<TraceabilityNode> query(TraceabilityQuery q, Designator d, TraceabilityNode root, Tracer factory) 
+		public List<TraceabilityNode> query(TraceabilityQuery q, Designator d, TraceabilityNode root,
+				Tracer factory)
 		{
 			List<TraceabilityNode> leaves = new ArrayList<TraceabilityNode>();
 			TraceabilityNode n = factory.getOrNode();
@@ -156,7 +158,8 @@ public abstract class Quantifier implements Function
 			{
 				Value v = vv.verdict;
 				Tracer sub_factory = factory.getSubTracer(Quantifier.this);
-				List<TraceabilityNode> sub_leaves = v.query(q, Function.ReturnValue.instance, n, sub_factory);
+				List<TraceabilityNode> sub_leaves = v.query(q, Function.ReturnValue.instance, n,
+						sub_factory);
 				leaves.addAll(sub_leaves);
 			}
 			TraceabilityNode tn = factory.getObjectNode(Function.ReturnValue.instance, Quantifier.this);
@@ -172,16 +175,17 @@ public abstract class Quantifier implements Function
 			return leaves;
 		}
 	}
-	
+
 	protected class QuantifierConjunctiveVerdict extends QuantifierVerdict
 	{
 		public QuantifierConjunctiveVerdict(boolean value, List<VerdictValue> verdicts)
 		{
 			super(value, verdicts);
 		}
-		
+
 		@Override
-		public List<TraceabilityNode> query(TraceabilityQuery q, Designator d, TraceabilityNode root, Tracer factory) 
+		public List<TraceabilityNode> query(TraceabilityQuery q, Designator d, TraceabilityNode root,
+				Tracer factory)
 		{
 			List<TraceabilityNode> leaves = new ArrayList<TraceabilityNode>();
 			TraceabilityNode n = factory.getAndNode();
@@ -206,5 +210,5 @@ public abstract class Quantifier implements Function
 			return leaves;
 		}
 	}
-	
+
 }

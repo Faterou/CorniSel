@@ -24,19 +24,19 @@ import java.util.List;
 public class TestResult
 {
 	protected List<Verdict> m_verdicts;
-	
+
 	public TestResult(List<Verdict> verdicts)
 	{
 		super();
 		m_verdicts = new ArrayList<Verdict>(verdicts.size());
 		m_verdicts.addAll(verdicts);
 	}
-	
+
 	public List<Verdict> getVerdicts()
 	{
 		return m_verdicts;
 	}
-	
+
 	public Boolean getResult()
 	{
 		for (Verdict v : m_verdicts)
@@ -48,7 +48,7 @@ public class TestResult
 		}
 		return true;
 	}
-	
+
 	public void assertVerdict() throws TestError
 	{
 		if (!getResult())
@@ -56,5 +56,5 @@ public class TestResult
 			throw new TestError(this);
 		}
 	}
-	
+
 }

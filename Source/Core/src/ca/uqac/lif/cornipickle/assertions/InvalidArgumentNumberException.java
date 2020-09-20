@@ -25,7 +25,7 @@ public class InvalidArgumentNumberException extends FunctionException
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public InvalidArgumentNumberException(Function e, int expected, int received) 
+	public InvalidArgumentNumberException(Function e, int expected, int received)
 	{
 		super(e, "Invalid number of arguments: expected " + expected + ", received " + received);
 	}

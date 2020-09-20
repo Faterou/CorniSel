@@ -29,12 +29,19 @@ import ca.uqac.lif.cornipickle.driver.CornipickleDriver.UpdateMode;
  * @author Francis Guérin
  *
  */
-public interface TestOracle {
+public interface TestOracle
+{
 	CornipickleDriver check(String name, Function property);
+
 	CornipickleDriver check(Function property);
+
 	void evaluateAll(WebElement event);
+
 	UpdateMode getUpdateMode();
+
 	TestResult getResult();
+
 	void resetHistory();
+
 	void clear();
 }

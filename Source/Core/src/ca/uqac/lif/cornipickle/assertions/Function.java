@@ -22,10 +22,10 @@ import ca.uqac.lif.petitpoucet.Designator;
 
 public interface Function
 {
-	public Value evaluate(Object ... arguments);
-	
+	public Value evaluate(Object... arguments);
+
 	public Function set(String variable, Object value);
-	
+
 	public int getArity();
 
 	public static Function lift(Object o)
@@ -47,19 +47,19 @@ public interface Function
 		}
 
 		@Override
-		public boolean appliesTo(Object o) 
+		public boolean appliesTo(Object o)
 		{
 			return o instanceof Function;
 		}
 
 		@Override
-		public Designator peek() 
+		public Designator peek()
 		{
 			return this;
 		}
 
 		@Override
-		public Designator tail() 
+		public Designator tail()
 		{
 			return null;
 		}
@@ -67,7 +67,7 @@ public interface Function
 		@Override
 		public String toString()
 		{
-			return "!"; 
+			return "!";
 		}
 	}
 
@@ -97,26 +97,26 @@ public interface Function
 			super();
 			m_index = index;
 		}
-		
+
 		public int getIndex()
 		{
 			return m_index;
 		}
 
 		@Override
-		public boolean appliesTo(Object o) 
+		public boolean appliesTo(Object o)
 		{
 			return o instanceof Function;
 		}
 
 		@Override
-		public Designator peek() 
+		public Designator peek()
 		{
 			return this;
 		}
 
 		@Override
-		public Designator tail() 
+		public Designator tail()
 		{
 			return null;
 		}
@@ -124,7 +124,7 @@ public interface Function
 		@Override
 		public String toString()
 		{
-			return "@" + m_index; 
+			return "@" + m_index;
 		}
 	}
 }

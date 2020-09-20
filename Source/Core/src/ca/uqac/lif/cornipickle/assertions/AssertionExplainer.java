@@ -35,14 +35,15 @@ public class AssertionExplainer implements Explainer
 	{
 		return explain(v, true);
 	}
-	
+
 	public static TraceabilityNode explain(Value v, boolean simplify)
 	{
 		ConcreteTracer tracer = new ConcreteTracer();
 		tracer.setSimplify(simplify);
-		return tracer.getTree(TraceabilityQuery.CausalityQuery.instance, Function.ReturnValue.instance, v);
+		return tracer.getTree(TraceabilityQuery.CausalityQuery.instance, Function.ReturnValue.instance,
+				v);
 	}
-	
+
 	public static void explainAndDraw(TestResult v, boolean flatten, String filename)
 	{
 		for (Verdict verdict : v.getVerdicts())
@@ -66,8 +67,8 @@ public class AssertionExplainer implements Explainer
 				BufferedWriter bw = new BufferedWriter(writer))
 		{
 			bw.write(dot_contents);
-		} 
-		catch (IOException e) 
+		}
+		catch (IOException e)
 		{
 			e.printStackTrace();
 		}
@@ -81,6 +82,7 @@ public class AssertionExplainer implements Explainer
 			return null;
 		}
 		ConcreteTracer tracer = new ConcreteTracer();
-		return tracer.getTree(TraceabilityQuery.CausalityQuery.instance, Function.ReturnValue.instance, q);
+		return tracer.getTree(TraceabilityQuery.CausalityQuery.instance, Function.ReturnValue.instance,
+				q);
 	}
 }

@@ -24,7 +24,7 @@ public class FunctionException extends RuntimeException
 	 * Dummy UID
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	/**
 	 * The function that is throwing the exception
 	 */
@@ -35,7 +35,7 @@ public class FunctionException extends RuntimeException
 		super(message);
 		m_function = e;
 	}
-	
+
 	public FunctionException(Function e, Throwable t)
 	{
 		super(t);

@@ -24,9 +24,9 @@ public class Addition extends AtomicFunction
 	{
 		super(arity);
 	}
-	
+
 	@Override
-	protected Object get(Object ... arguments) 
+	protected Object get(Object... arguments)
 	{
 		float sum = 0;
 		for (int i = 0; i < m_arity; i++)
@@ -41,7 +41,7 @@ public class Addition extends AtomicFunction
 		}
 		return sum;
 	}
-	
+
 	@Override
 	public String toString()
 	{

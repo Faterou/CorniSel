@@ -34,36 +34,36 @@ import ca.uqac.lif.cornipickle.assertions.TestResult;
 public class Interpreter
 {
 	protected List<TestCondition> m_conditions;
-	
+
 	protected List<Value> m_returnedValues;
-	
+
 	public Interpreter()
 	{
 		super();
 		m_conditions = new ArrayList<TestCondition>();
 		m_returnedValues = new ArrayList<Value>();
 	}
-	
+
 	public void resetHistory()
 	{
-		
+
 	}
-	
+
 	public void clear()
 	{
 		m_conditions.clear();
 	}
-	
+
 	public void check(Function property)
 	{
 		m_conditions.add(new TestCondition(property));
 	}
-	
+
 	public void check(TestCondition property)
 	{
 		m_conditions.add(property);
 	}
-	
+
 	public void evaluateAll(WebElement root)
 	{
 		m_returnedValues.clear();
@@ -72,7 +72,7 @@ public class Interpreter
 			m_returnedValues.add(tc.evaluate(root));
 		}
 	}
-	
+
 	public TestResult getVerdict()
 	{
 		List<Verdict> verdicts = new ArrayList<Verdict>(m_conditions.size());

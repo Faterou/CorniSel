@@ -18,13 +18,13 @@
  */
 package ca.uqac.lif.cornipickle.assertions;
 
-public class IsEqualTo extends AtomicFunction 
+public class IsEqualTo extends AtomicFunction
 {
 	public static final Function Equals(Object op1, Object op2)
 	{
 		return new ComposedFunction(new IsEqualTo(), op1, op2);
 	}
-	
+
 	public IsEqualTo()
 	{
 		super(2);
@@ -53,7 +53,7 @@ public class IsEqualTo extends AtomicFunction
 		}
 		return false;
 	}
-	
+
 	protected static boolean isNumber(Object o)
 	{
 		if (o instanceof Number)
@@ -74,7 +74,7 @@ public class IsEqualTo extends AtomicFunction
 		}
 		return false;
 	}
-	
+
 	protected static float floatValue(Object o)
 	{
 		if (o instanceof Number)
@@ -87,7 +87,7 @@ public class IsEqualTo extends AtomicFunction
 		}
 		return 0f;
 	}
-	
+
 	@Override
 	public String toString()
 	{

@@ -31,25 +31,25 @@ import ca.uqac.lif.petitpoucet.LabeledEdge.Quality;
 public abstract class AtomicFunction implements Function
 {
 	protected int m_arity;
-	
+
 	public AtomicFunction(int arity)
 	{
 		super();
 		m_arity = arity;
 	}
-	
+
 	@Override
 	public int getArity()
 	{
 		return m_arity;
 	}
-	
+
 	@Override
 	public AtomicFunction set(String variable, Object value)
 	{
 		return this;
 	}
-	
+
 	@Override
 	public Value evaluate(Object... arguments)
 	{
@@ -60,8 +60,8 @@ public abstract class AtomicFunction implements Function
 		}
 		return compute(values);
 	}
-	
-	protected Value compute(Value... values) 
+
+	protected Value compute(Value... values)
 	{
 		if (checkArity() && values.length != m_arity)
 		{
@@ -79,21 +79,21 @@ public abstract class AtomicFunction implements Function
 		}
 		return new AtomicFunctionReturnValue(ret_obj, values);
 	}
-	
+
 	protected boolean checkArity()
 	{
 		return true;
 	}
-	
-	protected abstract Object get(Object ... arguments);
-	
+
+	protected abstract Object get(Object... arguments);
+
 	public class AtomicFunctionReturnValue implements Value
 	{
 		protected Value[] m_inputValues;
-		
+
 		protected Object m_outputValue;
-		
-		public AtomicFunctionReturnValue(Object output_value, Value ... input_values)
+
+		public AtomicFunctionReturnValue(Object output_value, Value... input_values)
 		{
 			super();
 			m_outputValue = output_value;
@@ -101,7 +101,8 @@ public abstract class AtomicFunction implements Function
 		}
 
 		@Override
-		public List<TraceabilityNode> query(TraceabilityQuery q, Designator d, TraceabilityNode root, Tracer factory) 
+		public List<TraceabilityNode> query(TraceabilityQuery q, Designator d, TraceabilityNode root,
+				Tracer factory)
 		{
 			List<TraceabilityNode> leaves = new ArrayList<TraceabilityNode>();
 			TraceabilityNode n = factory.getAndNode();
@@ -132,11 +133,11 @@ public abstract class AtomicFunction implements Function
 		}
 
 		@Override
-		public Object get() 
+		public Object get()
 		{
 			return m_outputValue;
 		}
-		
+
 		@Override
 		public String toString()
 		{

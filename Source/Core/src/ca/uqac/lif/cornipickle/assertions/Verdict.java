@@ -27,29 +27,29 @@ import ca.uqac.lif.petitpoucet.TraceabilityNode;
 import ca.uqac.lif.petitpoucet.graph.AndNode;
 import ca.uqac.lif.petitpoucet.graph.OrNode;
 
-public class Verdict 
+public class Verdict
 {
 	protected TestCondition m_condition;
-	
+
 	protected Value m_value;
-	
+
 	public Verdict(Value v, TestCondition c)
 	{
 		super();
 		m_value = v;
 		m_condition = c;
 	}
-	
+
 	public TestCondition getCondition()
 	{
 		return m_condition;
 	}
-	
+
 	public Value getValue()
 	{
 		return m_value;
 	}
-	
+
 	public boolean getResult()
 	{
 		Object o = m_value.get();
@@ -59,13 +59,13 @@ public class Verdict
 		}
 		return true;
 	}
-	
+
 	public List<List<Object>> getWitnesses()
 	{
 		List<List<Object>> list = new ArrayList<List<Object>>();
 		return list;
 	}
-	
+
 	public List<Object> getWitness()
 	{
 		List<Object> list = new ArrayList<Object>();
@@ -73,7 +73,7 @@ public class Verdict
 		pick(root, list);
 		return list;
 	}
-	
+
 	protected static void pick(TraceabilityNode n, List<Object> list)
 	{
 		if (n instanceof AndNode)

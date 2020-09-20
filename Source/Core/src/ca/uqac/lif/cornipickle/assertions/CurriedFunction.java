@@ -30,11 +30,11 @@ import ca.uqac.lif.petitpoucet.LabeledEdge.Quality;
 public class CurriedFunction implements Function
 {
 	protected Function m_function;
-	
+
 	protected Value m_argument;
-	
+
 	protected int m_index;
-	
+
 	public CurriedFunction(Function f, int index, Value v)
 	{
 		super();
@@ -42,21 +42,21 @@ public class CurriedFunction implements Function
 		m_index = index;
 		m_argument = v;
 	}
-	
+
 	@Override
 	public CurriedFunction set(String variable, Object value)
 	{
 		return new CurriedFunction(m_function.set(variable, value), m_index, m_argument);
 	}
-	
+
 	@Override
 	public int getArity()
 	{
 		return Math.max(0, m_function.getArity() - 1);
 	}
-	
+
 	@Override
-	public Value evaluate(Object... arguments) 
+	public Value evaluate(Object... arguments)
 	{
 		Value[] new_arguments = new Value[getArity() + 1];
 		for (int i = 0; i < m_index; i++)
@@ -71,20 +71,20 @@ public class CurriedFunction implements Function
 		Value v = m_function.evaluate((Object[]) new_arguments);
 		return new CurriedFunctionReturnValue(v, new_arguments);
 	}
-	
+
 	@Override
 	public String toString()
 	{
 		return m_function + " at @" + m_index + "=" + m_argument;
 	}
-	
+
 	public class CurriedFunctionReturnValue implements Value
 	{
 		protected Value[] m_inputValues;
-		
+
 		protected Value m_returnValue;
-		
-		public CurriedFunctionReturnValue(Value return_value, Value ... arguments)
+
+		public CurriedFunctionReturnValue(Value return_value, Value... arguments)
 		{
 			super();
 			m_inputValues = arguments;
@@ -92,7 +92,8 @@ public class CurriedFunction implements Function
 		}
 
 		@Override
-		public List<TraceabilityNode> query(TraceabilityQuery q, Designator d, TraceabilityNode root, Tracer factory) 
+		public List<TraceabilityNode> query(TraceabilityQuery q, Designator d, TraceabilityNode root,
+				Tracer factory)
 		{
 			List<TraceabilityNode> leaves = new ArrayList<TraceabilityNode>();
 			if (!(d.peek() instanceof Function.ReturnValue))
@@ -114,7 +115,8 @@ public class CurriedFunction implements Function
 				}
 				else
 				{
-					sub_root = factory.getObjectNode(CurriedFunction.CurryArgument.get(i), CurriedFunction.this);
+					sub_root = factory.getObjectNode(CurriedFunction.CurryArgument.get(i),
+							CurriedFunction.this);
 				}
 				List<TraceabilityNode> sub_leaves = new ArrayList<TraceabilityNode>();
 				sub_leaves = m_inputValues[i].query(q, d, sub_root, factory);
@@ -135,18 +137,18 @@ public class CurriedFunction implements Function
 		}
 
 		@Override
-		public Object get() 
+		public Object get()
 		{
 			return m_returnValue.get();
 		}
-		
+
 		@Override
 		public String toString()
 		{
 			return m_returnValue.toString();
 		}
 	}
-	
+
 	public static class CurryArgument implements Designator
 	{
 		protected int m_index;
@@ -175,19 +177,19 @@ public class CurriedFunction implements Function
 		}
 
 		@Override
-		public boolean appliesTo(Object o) 
+		public boolean appliesTo(Object o)
 		{
 			return o instanceof Function;
 		}
 
 		@Override
-		public Designator peek() 
+		public Designator peek()
 		{
 			return this;
 		}
 
 		@Override
-		public Designator tail() 
+		public Designator tail()
 		{
 			return null;
 		}
@@ -195,7 +197,7 @@ public class CurriedFunction implements Function
 		@Override
 		public String toString()
 		{
-			return "@C"; 
+			return "@C";
 		}
 	}
 }
