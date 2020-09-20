@@ -55,13 +55,8 @@ var unHighlightElements = function()
 /**
  * Highlights an element that violates a property
  */
-var highlightElement = function(id, tuple_id)
+var highlightElement = function(el)
 {
-	if(!(window.m_idMap[id]))
-	{
-		return;
-	}
-	var el = window.m_idMap[id].element;
 	if(!el.tagName)
 	{
 		el = el.parentElement;
@@ -90,17 +85,13 @@ else
 	highlightDiv = document.getElementById("cp-highlight");
 }
 
-//Highlight elements, if any  
+// Highlight elements, if any  
 for (var i = 0; i < arguments[0].length; i++)
 {
-	var set_of_tuples = arguments[0][i];
-	for (var j = 0; j < set_of_tuples.length; j++)
+	var path = arguments[0][i];
+	var el = document.evaluate(path, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+	if (el)
 	{
-		var tuple = set_of_tuples[j];
-		for (var k = 0; k < tuple.length; k++)
-		{
-			var el_id = tuple[k];
-			highlightElement(el_id, i);
-		}
+		highlightElement(el);
 	}
 }

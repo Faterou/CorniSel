@@ -2,32 +2,29 @@
     Cornipickle, validation of layout bugs in web applications
     Copyright (C) 2015-2020 Laboratoire d'informatique formelle
     Université du Québec à Chicoutimi, Canada
-    
+
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published
     by the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
-    
+
     This program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
-    
+
     You should have received a copy of the GNU Lesser General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package ca.uqac.lif.cornipickle.driver;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
+import java.util.Scanner;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -40,6 +37,7 @@ import ca.uqac.lif.cornipickle.assertions.TestCondition;
 import ca.uqac.lif.cornipickle.assertions.TestResult;
 import ca.uqac.lif.cornipickle.assertions.Verdict;
 import ca.uqac.lif.petitpoucet.DesignatedObject;
+import ca.uqac.lif.petitpoucet.Designator;
 
 /**
  * 
@@ -48,17 +46,13 @@ import ca.uqac.lif.petitpoucet.DesignatedObject;
  */
 public class CornipickleDriver extends WebDriverDecorator implements TestOracle
 {
+	public static enum UpdateMode	{MANUAL, AUTOMATIC}
+
+	protected static final transient String s_highlightScript = readJs("resource/highlight.js");
 
 	private Interpreter m_interpreter;
 
-	private String m_highlightScript;
-
 	private List<EvaluationListener> m_listeners;
-
-	public static enum UpdateMode
-	{
-		MANUAL, AUTOMATIC
-	};
 
 	public UpdateMode m_updateMode = UpdateMode.AUTOMATIC;
 
@@ -68,7 +62,6 @@ public class CornipickleDriver extends WebDriverDecorator implements TestOracle
 	{
 		super(driver);
 		m_interpreter = new Interpreter();
-		m_highlightScript = "";
 		m_listeners = new ArrayList<EvaluationListener>();
 	}
 
@@ -357,36 +350,9 @@ public class CornipickleDriver extends WebDriverDecorator implements TestOracle
 		return cswelist;
 	}
 
-	private String readJS(String path)
-	{
-		InputStream is;
-		try
-		{
-			is = getClass().getResourceAsStream(path);
-			BufferedReader bf = new BufferedReader(new InputStreamReader(is));
-			String inputLine;
-			String script = "";
-			while ((inputLine = bf.readLine()) != null)
-			{
-				script = script + inputLine + "\n";
-			}
-
-			return script;
-		}
-		catch (FileNotFoundException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
-		}
-		return null;
-	}
-
 	public CornipickleDriver highlightElements()
 	{
+		List<String> paths_to_highlight = new ArrayList<String>();
 		TestResult result = m_interpreter.getVerdict();
 		for (Verdict v : result.getVerdicts())
 		{
@@ -399,24 +365,57 @@ public class CornipickleDriver extends WebDriverDecorator implements TestOracle
 			{
 				if (o instanceof DesignatedObject)
 				{
-					Path p = getPath((DesignatedObject) o);
+					String p = getPath((DesignatedObject) o);
 					if (p != null)
 					{
-						highlightElement(p);
+						paths_to_highlight.add(p);
 					}
 				}
 			}
 		}
+		highlightElements(paths_to_highlight);
 		return this;
 	}
 
-	protected static Path getPath(DesignatedObject dob)
+	protected static String getPath(DesignatedObject dob)
 	{
-		return null;
+		Designator d = dob.getDesignator();
+		String path = "";
+		while (d.tail() != null)
+		{
+			Designator head = d.peek();
+			if (head instanceof Path)
+			{
+				path += head.toString();
+			}
+			d = d.tail();
+		}
+		if (path.isEmpty())
+		{
+			return null;
+		}
+		return "/html/body" + path;
 	}
 
-	protected void highlightElement(Path p)
+	protected void highlightElements(List<String> paths)
 	{
+		super.m_webDriver.executeScript(s_highlightScript, paths);
+	}
 
+	protected static String readJs(String filename)
+	{
+		InputStream is = CornipickleDriver.class.getResourceAsStream(filename);
+		if (is == null)
+		{
+			return "";
+		}
+		StringBuilder sb = new StringBuilder();
+		Scanner scanner = new Scanner(is);
+		while (scanner.hasNextLine())
+		{
+			sb.append(scanner.nextLine()).append("\n");
+		}
+		scanner.close();
+		return sb.toString();
 	}
 }

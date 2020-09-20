@@ -72,11 +72,21 @@ public class Path implements Designator
 			m_tagName = tag_name;
 			m_index = index;
 		}
+		
+		public String getTagName()
+		{
+			return m_tagName;
+		}
+		
+		public int getIndex()
+		{
+			return m_index;
+		}
 
 		@Override
 		public String toString()
 		{
-			return m_tagName + "[" + m_index + "]";
+			return m_tagName + "[" + (m_index + 1) + "]";
 		}
 	}
 

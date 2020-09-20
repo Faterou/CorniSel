@@ -24,17 +24,18 @@ public class SimpleTest
 {
 	static
 	{
-		//System.setProperty("webdriver.gecko.driver", "/home/sylvain/Desktop/geckodriver");
+		System.setProperty("webdriver.gecko.driver", "/home/sylvain/Desktop/geckodriver");
 	}
 	
 	@Test
 	public void test1()
 	{
-		CornipickleDriver driver = new CornipickleDriver(new JBrowserDriver())
+		CornipickleDriver driver = new CornipickleDriver(new FirefoxDriver())
 				.check("Items have width 100", 
 						ForAll("$x", Find.ByTagName("li"), IsGreaterOrEqual(Dimension.Width("$x"), 100)));
 		driver.get("http://localhost/test.html");
 		TestResult v = driver.getResult();
+		driver.highlightElements();
 		explainAndDraw(v, false, "/tmp/out.dot");
 		v.assertVerdict();
 		//driver.close();

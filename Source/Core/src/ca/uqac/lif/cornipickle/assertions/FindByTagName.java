@@ -84,7 +84,7 @@ public class FindByTagName extends Enumerate
 			WebElement child = children.get(i);
 			if (child instanceof WebElement)
 			{
-				Path new_p = p.append(e.getTagName(), i);
+				Path new_p = p.append(child.getTagName(), i);
 				find(tag, root, (WebElement) child, new_p, out_list);
 			}
 		}
