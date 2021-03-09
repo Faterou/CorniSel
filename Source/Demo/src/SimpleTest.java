@@ -6,7 +6,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
-import com.machinepublishers.jbrowserdriver.JBrowserDriver;
+//import com.machinepublishers.jbrowserdriver.JBrowserDriver;
 
 import ca.uqac.lif.cornipickle.assertions.Dimension;
 import ca.uqac.lif.cornipickle.assertions.Find;

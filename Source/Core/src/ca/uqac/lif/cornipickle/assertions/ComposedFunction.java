@@ -94,8 +94,9 @@ public class ComposedFunction implements Function
 
 	protected void getArguments(Set<Integer> args)
 	{
-		for (Function f : m_operands)
+		for (int i = 0; i < m_operands.length; i++)
 		{
+			Function f = m_operands[i];
 			if (f instanceof ComposedFunction)
 			{
 				((ComposedFunction) f).getArguments(args);
@@ -103,6 +104,10 @@ public class ComposedFunction implements Function
 			if (f instanceof Argument)
 			{
 				args.add(((Argument) f).m_index);
+			}
+			if (f instanceof NamedArgument)
+			{
+				args.add(i);
 			}
 		}
 	}
@@ -195,27 +200,46 @@ public class ComposedFunction implements Function
 		protected String m_name;
 
 		protected Value m_value;
+		
+		protected boolean m_isSet;
 
 		public NamedArgument(String name)
 		{
 			super();
 			m_name = name;
 			m_value = null;
+			m_isSet = false;
 		}
 
 		@Override
 		public NamedArgument set(String name, Object value)
 		{
+			NamedArgument na = new NamedArgument(m_name);
 			if (m_name.compareTo(name) == 0 || ("$" + m_name).compareTo(name) == 0)
 			{
-				m_value = Value.lift(value);
+				na.m_value = Value.lift(value);
+				na.m_isSet = true;
 			}
-			return this;
+			return na;
 		}
 
 		@Override
 		public Value evaluate(Object... arguments)
 		{
+			if (m_isSet)
+			{
+				return new NamedArgumentValue(m_name, Value.lift(m_value));
+			}
+			for (int i = 0; i < ComposedFunction.this.m_operands.length; i++)
+			{
+				if (m_operands[i] instanceof NamedArgument)
+				{
+					if (m_name.compareTo(((NamedArgument) m_operands[i]).getName()) == 0)
+					{
+						return new NamedArgumentValue(m_name, Value.lift(arguments[i]));
+					}
+				}
+			}
 			return new NamedArgumentValue(m_name, m_value);
 		}
 
@@ -259,12 +283,12 @@ public class ComposedFunction implements Function
 					new FunctionNamedArgument(m_name, m_value));
 			TraceabilityNode n = factory.getObjectNode(new_d, m_value);
 			List<TraceabilityNode> sub_leaves = m_value.query(q, d, n, factory);
-			for (TraceabilityNode sub_leaf : sub_leaves)
+			/*for (TraceabilityNode sub_leaf : sub_leaves)
 			{
 				TraceabilityNode to_add = factory.getObjectNode(new_d, m_value);
 				sub_leaf.addChild(to_add, Quality.EXACT);
 				leaves.add(to_add);
-			}
+			}*/
 			leaves.addAll(sub_leaves);
 			root.addChild(n, Quality.EXACT);
 			return leaves;

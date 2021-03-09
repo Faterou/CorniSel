@@ -119,16 +119,16 @@ public abstract class AtomicFunction implements Function
 				leaves.addAll(sub_leaves);
 				n.addChild(sub_root, Quality.EXACT);
 			}
-			TraceabilityNode f_root = factory.getObjectNode(d, AtomicFunction.this);
+			//TraceabilityNode f_root = factory.getObjectNode(d, AtomicFunction.this);
 			if (n.getChildren().size() == 1)
 			{
-				f_root.addChild(n.getChildren().get(0));
+				root.addChild(n.getChildren().get(0));
 			}
 			else
 			{
-				f_root.addChild(n, Quality.EXACT);
+				root.addChild(n, Quality.EXACT);
 			}
-			root.addChild(f_root, Quality.EXACT);
+			//root.addChild(f_root, Quality.EXACT);
 			return leaves;
 		}
 

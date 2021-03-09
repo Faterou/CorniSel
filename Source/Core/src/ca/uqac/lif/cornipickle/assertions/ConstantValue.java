@@ -46,6 +46,7 @@ public class ConstantValue implements Value
 		ComposedDesignator new_d = new ComposedDesignator(new ConstantDesignator(), d);
 		TraceabilityNode n = factory.getObjectNode(new_d, m_value);
 		root.addChild(n, Quality.EXACT);
+		leaves.add(n);
 		return leaves;
 	}
 
