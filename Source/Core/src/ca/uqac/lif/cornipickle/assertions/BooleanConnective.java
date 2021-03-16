@@ -21,7 +21,9 @@ package ca.uqac.lif.cornipickle.assertions;
 import java.util.ArrayList;
 import java.util.List;
 
+import ca.uqac.lif.petitpoucet.ConstantElaboration;
 import ca.uqac.lif.petitpoucet.Designator;
+import ca.uqac.lif.petitpoucet.LabeledEdge;
 import ca.uqac.lif.petitpoucet.TraceabilityNode;
 import ca.uqac.lif.petitpoucet.TraceabilityQuery;
 import ca.uqac.lif.petitpoucet.Tracer;
@@ -100,13 +102,22 @@ public abstract class BooleanConnective extends AtomicFunction
 		{
 			List<TraceabilityNode> leaves = new ArrayList<TraceabilityNode>();
 			TraceabilityNode n = factory.getOrNode();
+			String val = " is false";
+			if (m_value)
+			{
+				val = " is true";
+			}
+			ConstantElaboration ce = new ConstantElaboration(BooleanConnective.this.toString() + val);
+			n.setShortElaboration(ce);
 			for (Value v : m_verdicts)
 			{
 				leaves.addAll(v.query(q, Function.ReturnValue.instance, n, factory));
 			}
 			if (n.getChildren().size() == 1)
 			{
-				root.addChild(n.getChildren().get(0));
+				LabeledEdge edge = n.getChildren().get(0);
+				edge.getNode().setShortElaboration(ce);
+				root.addChild(edge);
 			}
 			else
 			{
@@ -129,13 +140,22 @@ public abstract class BooleanConnective extends AtomicFunction
 		{
 			List<TraceabilityNode> leaves = new ArrayList<TraceabilityNode>();
 			TraceabilityNode n = factory.getAndNode();
+			String val = " is false";
+			if (m_value)
+			{
+				val = " is true";
+			}
+			ConstantElaboration ce = new ConstantElaboration(BooleanConnective.this.toString() + val);
+			n.setShortElaboration(ce);
 			for (Value v : m_verdicts)
 			{
 				leaves.addAll(v.query(q, d, n, factory));
 			}
 			if (n.getChildren().size() == 1)
 			{
-				root.addChild(n.getChildren().get(0));
+				LabeledEdge edge = n.getChildren().get(0);
+				edge.getNode().setShortElaboration(ce);
+				root.addChild(edge);
 			}
 			else
 			{

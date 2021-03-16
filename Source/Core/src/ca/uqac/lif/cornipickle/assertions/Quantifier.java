@@ -115,7 +115,7 @@ public abstract class Quantifier implements Function
 		}
 	}
 
-	protected static abstract class QuantifierVerdict implements Value
+	protected abstract class QuantifierVerdict implements Value
 	{
 		protected List<VerdictValue> m_verdicts;
 

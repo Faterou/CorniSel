@@ -81,7 +81,7 @@ public class Enumerate extends AtomicFunction
 				Tracer factory)
 		{
 			List<TraceabilityNode> leaves = new ArrayList<TraceabilityNode>();
-			Designator new_d = new ComposedDesignator(d.tail(), new NthItem(m_index));
+			Designator new_d = ComposedDesignator.create(d.tail(), new NthItem(m_index));
 			TraceabilityNode n_it = factory.getObjectNode(new_d, m_inputList);
 			root.addChild(n_it, Quality.EXACT);
 			Value v = m_inputList.get(m_index);

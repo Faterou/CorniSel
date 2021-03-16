@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ca.uqac.lif.petitpoucet.ComposedDesignator;
+import ca.uqac.lif.petitpoucet.ConstantElaboration;
 import ca.uqac.lif.petitpoucet.Designator;
 import ca.uqac.lif.petitpoucet.TraceabilityNode;
 import ca.uqac.lif.petitpoucet.TraceabilityQuery;
@@ -43,8 +44,9 @@ public class ConstantValue implements Value
 			Tracer factory)
 	{
 		List<TraceabilityNode> leaves = new ArrayList<TraceabilityNode>(1);
-		ComposedDesignator new_d = new ComposedDesignator(new ConstantDesignator(), d);
+		Designator new_d = ComposedDesignator.create(new ConstantDesignator(), d);
 		TraceabilityNode n = factory.getObjectNode(new_d, m_value);
+		n.setShortElaboration(new ConstantElaboration(m_value));
 		root.addChild(n, Quality.EXACT);
 		leaves.add(n);
 		return leaves;

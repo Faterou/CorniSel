@@ -127,7 +127,7 @@ public class FindByTagName extends Enumerate
 				Tracer factory)
 		{
 			List<TraceabilityNode> leaves = new ArrayList<TraceabilityNode>();
-			Designator new_d = new ComposedDesignator(d.tail(), m_path);
+			Designator new_d = ComposedDesignator.create(d.tail(), m_path);
 			TraceabilityNode n = factory.getObjectNode(new_d, m_root);
 			leaves.addAll(m_root.query(q, new_d, n, factory));
 			root.addChild(n, Quality.EXACT);

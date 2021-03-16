@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ca.uqac.lif.petitpoucet.ComposedDesignator;
+import ca.uqac.lif.petitpoucet.ConstantElaboration;
 import ca.uqac.lif.petitpoucet.Designator;
 import ca.uqac.lif.petitpoucet.TraceabilityNode;
 import ca.uqac.lif.petitpoucet.TraceabilityQuery;
@@ -106,13 +107,26 @@ public abstract class AtomicFunction implements Function
 		{
 			List<TraceabilityNode> leaves = new ArrayList<TraceabilityNode>();
 			TraceabilityNode n = factory.getAndNode();
+			StringBuilder short_s = new StringBuilder();
+			short_s.append(AtomicFunction.this.toString()).append("(");
+			for (int i = 0; i < m_inputValues.length; i++)
+			{
+				if (i > 0)
+				{
+					short_s.append(",");
+				}
+				short_s.append(m_inputValues[i]);
+			}
+			short_s.append(")");
+			ConstantElaboration ce = new ConstantElaboration(short_s.toString());
+			n.setShortElaboration(ce);
 			for (int i = 0; i < m_inputValues.length; i++)
 			{
 				if (m_inputValues[i] == null)
 				{
 					continue;
 				}
-				Designator new_d = new ComposedDesignator(d.tail(), Function.InputArgument.get(i));
+				Designator new_d = ComposedDesignator.create(d.tail(), Function.InputArgument.get(i));
 				TraceabilityNode sub_root = factory.getObjectNode(new_d, AtomicFunction.this);
 				List<TraceabilityNode> sub_leaves = new ArrayList<TraceabilityNode>();
 				sub_leaves = m_inputValues[i].query(q, Function.ReturnValue.instance, sub_root, factory);

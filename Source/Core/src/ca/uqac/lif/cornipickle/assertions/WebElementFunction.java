@@ -106,7 +106,7 @@ public abstract class WebElementFunction extends AtomicFunction
 				Tracer factory)
 		{
 			List<TraceabilityNode> leaves = new ArrayList<TraceabilityNode>();
-			Designator new_d = new ComposedDesignator(new ElementAttribute(), d);
+			Designator new_d = ComposedDesignator.create(new ElementAttribute(), d);
 			TraceabilityNode n = factory.getObjectNode(new_d, m_input);
 			List<TraceabilityNode> sub_leaves = m_input.query(q, new_d, n, factory);
 			leaves.addAll(sub_leaves);

@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Set;
 
 import ca.uqac.lif.petitpoucet.ComposedDesignator;
+import ca.uqac.lif.petitpoucet.ConstantElaboration;
 import ca.uqac.lif.petitpoucet.Designator;
 import ca.uqac.lif.petitpoucet.TraceabilityNode;
 import ca.uqac.lif.petitpoucet.TraceabilityQuery;
@@ -156,8 +157,9 @@ public class ComposedFunction implements Function
 			{
 				return leaves;
 			}
-			Designator new_d = new ComposedDesignator(Function.ReturnValue.instance, d.tail());
+			Designator new_d = ComposedDesignator.create(Function.ReturnValue.instance, d.tail());
 			TraceabilityNode sub_root = factory.getObjectNode(new_d, ComposedFunction.this);
+			sub_root.setShortElaboration(new ConstantElaboration(m_operator + " equals " + m_returnValue));
 			List<TraceabilityNode> sub_leaves = new ArrayList<TraceabilityNode>();
 			sub_leaves = m_returnValue.query(q, d, sub_root, factory);
 			List<TraceabilityNode> new_sub_leaves = new ArrayList<TraceabilityNode>(sub_leaves.size());
@@ -279,9 +281,10 @@ public class ComposedFunction implements Function
 				Tracer factory)
 		{
 			List<TraceabilityNode> leaves = new ArrayList<TraceabilityNode>();
-			Designator new_d = new ComposedDesignator(d.tail(),
+			Designator new_d = ComposedDesignator.create(d.tail(),
 					new FunctionNamedArgument(m_name, m_value));
 			TraceabilityNode n = factory.getObjectNode(new_d, m_value);
+			n.setShortElaboration(new ConstantElaboration(m_name + " equals " + m_value));
 			List<TraceabilityNode> sub_leaves = m_value.query(q, d, n, factory);
 			/*for (TraceabilityNode sub_leaf : sub_leaves)
 			{
@@ -404,8 +407,9 @@ public class ComposedFunction implements Function
 				Tracer factory)
 		{
 			List<TraceabilityNode> leaves = new ArrayList<TraceabilityNode>();
-			Designator new_d = new ComposedDesignator(Function.InputArgument.get(m_index), d.tail());
+			Designator new_d = ComposedDesignator.create(Function.InputArgument.get(m_index), d.tail());
 			TraceabilityNode n = factory.getObjectNode(new_d, ComposedFunction.this);
+			n.setShortElaboration(new ConstantElaboration("Argument " + m_index + " equals " + m_value));
 			List<TraceabilityNode> sub_leaves = m_value.query(q, d, n, factory);
 			for (TraceabilityNode sub_leaf : sub_leaves)
 			{
