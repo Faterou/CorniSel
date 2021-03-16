@@ -22,10 +22,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ca.uqac.lif.petitpoucet.Designator;
+import ca.uqac.lif.petitpoucet.LabeledEdge;
 import ca.uqac.lif.petitpoucet.TraceabilityNode;
 import ca.uqac.lif.petitpoucet.TraceabilityQuery;
 import ca.uqac.lif.petitpoucet.Tracer;
 import ca.uqac.lif.petitpoucet.LabeledEdge.Quality;
+import ca.uqac.lif.petitpoucet.graph.ConstantElaboration;
 
 public abstract class Quantifier implements Function
 {
@@ -154,6 +156,13 @@ public abstract class Quantifier implements Function
 		{
 			List<TraceabilityNode> leaves = new ArrayList<TraceabilityNode>();
 			TraceabilityNode n = factory.getOrNode();
+			String val = " is false";
+			if (m_value)
+			{
+				val = " is true";
+			}
+			ConstantElaboration ce = new ConstantElaboration(Quantifier.this.toString() + val);
+			n.setShortElaboration(ce);
 			for (VerdictValue vv : m_verdicts)
 			{
 				Value v = vv.verdict;
@@ -165,7 +174,9 @@ public abstract class Quantifier implements Function
 			TraceabilityNode tn = factory.getObjectNode(Function.ReturnValue.instance, Quantifier.this);
 			if (m_verdicts.size() == 1)
 			{
-				tn.addChild(n.getChildren().get(0).getNode(), Quality.EXACT);
+				LabeledEdge edge = n.getChildren().get(0);
+				edge.getNode().setShortElaboration(ce);
+				tn.addChild(edge);
 			}
 			else
 			{
@@ -189,6 +200,13 @@ public abstract class Quantifier implements Function
 		{
 			List<TraceabilityNode> leaves = new ArrayList<TraceabilityNode>();
 			TraceabilityNode n = factory.getAndNode();
+			String val = " is false";
+			if (m_value)
+			{
+				val = " is true";
+			}
+			ConstantElaboration ce = new ConstantElaboration(Quantifier.this.toString() + val);
+			n.setShortElaboration(ce);
 			for (VerdictValue vv : m_verdicts)
 			{
 				Value v = vv.verdict;
@@ -200,7 +218,9 @@ public abstract class Quantifier implements Function
 			TraceabilityNode tn = factory.getObjectNode(Function.ReturnValue.instance, Quantifier.this);
 			if (m_verdicts.size() == 1)
 			{
-				tn.addChild(n.getChildren().get(0).getNode(), Quality.EXACT);
+				LabeledEdge edge = n.getChildren().get(0);
+				edge.getNode().setShortElaboration(ce);
+				tn.addChild(edge);
 			}
 			else
 			{

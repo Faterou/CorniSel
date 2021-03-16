@@ -21,13 +21,13 @@ package ca.uqac.lif.cornipickle.assertions;
 import java.util.ArrayList;
 import java.util.List;
 
-import ca.uqac.lif.petitpoucet.ConstantElaboration;
 import ca.uqac.lif.petitpoucet.Designator;
 import ca.uqac.lif.petitpoucet.LabeledEdge;
 import ca.uqac.lif.petitpoucet.TraceabilityNode;
 import ca.uqac.lif.petitpoucet.TraceabilityQuery;
 import ca.uqac.lif.petitpoucet.Tracer;
 import ca.uqac.lif.petitpoucet.LabeledEdge.Quality;
+import ca.uqac.lif.petitpoucet.graph.ConstantElaboration;
 
 public abstract class BooleanConnective extends AtomicFunction
 {
@@ -149,7 +149,7 @@ public abstract class BooleanConnective extends AtomicFunction
 			n.setShortElaboration(ce);
 			for (Value v : m_verdicts)
 			{
-				leaves.addAll(v.query(q, d, n, factory));
+				leaves.addAll(v.query(q, Function.ReturnValue.instance, n, factory));
 			}
 			if (n.getChildren().size() == 1)
 			{

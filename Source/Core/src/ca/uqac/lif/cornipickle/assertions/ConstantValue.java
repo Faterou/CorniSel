@@ -22,12 +22,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ca.uqac.lif.petitpoucet.ComposedDesignator;
-import ca.uqac.lif.petitpoucet.ConstantElaboration;
 import ca.uqac.lif.petitpoucet.Designator;
 import ca.uqac.lif.petitpoucet.TraceabilityNode;
 import ca.uqac.lif.petitpoucet.TraceabilityQuery;
 import ca.uqac.lif.petitpoucet.Tracer;
 import ca.uqac.lif.petitpoucet.LabeledEdge.Quality;
+import ca.uqac.lif.petitpoucet.graph.ConstantElaboration;
 
 public class ConstantValue implements Value
 {
