@@ -24,7 +24,7 @@ public class SimpleTest
 {
 	static
 	{
-		System.setProperty("webdriver.gecko.driver", "/home/sylvain/Desktop/geckodriver");
+		System.setProperty("webdriver.gecko.driver", "/usr/local/bin/geckodriver");
 	}
 	
 	@Test
