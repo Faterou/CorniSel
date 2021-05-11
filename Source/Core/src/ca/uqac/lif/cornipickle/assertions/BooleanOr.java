@@ -33,13 +33,13 @@ public class BooleanOr extends BooleanConnective
 	}
 
 	@Override
-	protected Value getBooleanValue(List<Value> false_values, List<Value> true_values)
+	protected Value getBooleanValue(List<Value> false_values, List<Value> true_values, List<Integer> false_positions, List<Integer> true_positions)
 	{
 		if (true_values.isEmpty())
 		{
-			return new NaryConjunctiveVerdict(false, false_values);
+			return new NaryConjunctiveVerdict(false, false_values, false_positions);
 		}
-		return new NaryDisjunctiveVerdict(true, true_values);
+		return new NaryDisjunctiveVerdict(true, true_values, true_positions);
 	}
 
 	@Override

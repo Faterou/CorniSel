@@ -21,6 +21,7 @@ package ca.uqac.lif.cornipickle.assertions;
 import java.util.ArrayList;
 import java.util.List;
 
+import ca.uqac.lif.petitpoucet.ComposedDesignator;
 import ca.uqac.lif.petitpoucet.Designator;
 import ca.uqac.lif.petitpoucet.LabeledEdge;
 import ca.uqac.lif.petitpoucet.TraceabilityNode;
@@ -41,6 +42,8 @@ public abstract class BooleanConnective extends AtomicFunction
 	{
 		List<Value> false_values = new ArrayList<Value>();
 		List<Value> true_values = new ArrayList<Value>();
+		List<Integer> false_positions = new ArrayList<Integer>();
+		List<Integer> true_positions = new ArrayList<Integer>();
 		for (int i = 0; i < values.length; i++)
 		{
 			Object o = values[i].get();
@@ -52,28 +55,33 @@ public abstract class BooleanConnective extends AtomicFunction
 			if (b)
 			{
 				true_values.add(values[i]);
+				true_positions.add(i);
 			}
 			else
 			{
 				false_values.add(values[i]);
+				false_positions.add(i);
 			}
 		}
-		return getBooleanValue(false_values, true_values);
+		return getBooleanValue(false_values, true_values, false_positions, true_positions);
 	}
 
-	protected abstract Value getBooleanValue(List<Value> false_values, List<Value> true_values);
+	protected abstract Value getBooleanValue(List<Value> false_values, List<Value> true_values, List<Integer> false_positions, List<Integer> true_positions);
 
 	protected static abstract class NaryVerdict implements Value
 	{
 		protected List<Value> m_verdicts;
 
 		protected Boolean m_value;
+		
+		protected List<Integer> m_positions;
 
-		protected NaryVerdict(boolean value, List<Value> verdicts)
+		protected NaryVerdict(boolean value, List<Value> verdicts, List<Integer> positions)
 		{
 			super();
 			m_value = value;
 			m_verdicts = verdicts;
+			m_positions = positions;
 		}
 
 		@Override
@@ -91,9 +99,9 @@ public abstract class BooleanConnective extends AtomicFunction
 
 	protected class NaryDisjunctiveVerdict extends NaryVerdict
 	{
-		public NaryDisjunctiveVerdict(boolean value, List<Value> verdicts)
+		public NaryDisjunctiveVerdict(boolean value, List<Value> verdicts, List<Integer> positions)
 		{
-			super(value, verdicts);
+			super(value, verdicts, positions);
 		}
 
 		@Override
@@ -109,9 +117,14 @@ public abstract class BooleanConnective extends AtomicFunction
 			}
 			ConstantElaboration ce = new ConstantElaboration(BooleanConnective.this.toString() + val);
 			n.setShortElaboration(ce);
-			for (Value v : m_verdicts)
+			for (int i = 0; i < m_verdicts.size(); i++)
 			{
-				leaves.addAll(v.query(q, Function.ReturnValue.instance, n, factory));
+				Value v = m_verdicts.get(i);
+				Designator new_d = ComposedDesignator.create(d.tail(), InputArgument.get(m_positions.get(i)));
+				TraceabilityNode sub_root = factory.getObjectNode(new_d, BooleanConnective.this);
+				List<TraceabilityNode> sub_leaves = v.query(q, Function.ReturnValue.instance, sub_root, factory);
+				leaves.addAll(sub_leaves);
+				n.addChild(sub_root, Quality.EXACT);
 			}
 			if (n.getChildren().size() == 1)
 			{
@@ -129,9 +142,9 @@ public abstract class BooleanConnective extends AtomicFunction
 
 	protected class NaryConjunctiveVerdict extends NaryVerdict
 	{
-		public NaryConjunctiveVerdict(boolean value, List<Value> verdicts)
+		public NaryConjunctiveVerdict(boolean value, List<Value> verdicts, List<Integer> positions)
 		{
-			super(value, verdicts);
+			super(value, verdicts, positions);
 		}
 
 		@Override
@@ -147,9 +160,14 @@ public abstract class BooleanConnective extends AtomicFunction
 			}
 			ConstantElaboration ce = new ConstantElaboration(BooleanConnective.this.toString() + val);
 			n.setShortElaboration(ce);
-			for (Value v : m_verdicts)
+			for (int i = 0; i < m_verdicts.size(); i++)
 			{
-				leaves.addAll(v.query(q, Function.ReturnValue.instance, n, factory));
+				Value v = m_verdicts.get(i);
+				Designator new_d = ComposedDesignator.create(d.tail(), InputArgument.get(m_positions.get(i)));
+				TraceabilityNode sub_root = factory.getObjectNode(new_d, BooleanConnective.this);
+				List<TraceabilityNode> sub_leaves = v.query(q, Function.ReturnValue.instance, sub_root, factory);
+				leaves.addAll(sub_leaves);
+				n.addChild(sub_root, Quality.EXACT);
 			}
 			if (n.getChildren().size() == 1)
 			{
